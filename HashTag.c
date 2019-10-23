@@ -202,7 +202,7 @@ for(tf=snapi;tf<=snapf;tf++)
 	//#ifdef DoParallel
 	//MPI_Barrier(MPI_COMM_WORLD);
 	//#endif
-	free(StellarHalo);
+	//free(StellarHalo);
 	//H5Tclose(TagDatatype);
 	//H5Dclose(dataset);
 	//H5Sclose(dataspace);
@@ -214,14 +214,17 @@ for(tf=snapi;tf<=snapf;tf++)
 //printf("key test:%lld, IsStar:%d, snap:%d \n",table->table[17940]->key,IsStar(table->table[17940]),table->table[17940]->star->Snap);
 //struct HashTable *table=EmptyTable(GP.TotNumPart);
 for(i=0;i<GP.TotNumTagsAllSnaps;i++)
+	{
+	printf("Tag add:%lld\n",StellarHaloAllSnaps[i].PID);
 	InsertKey(table,StellarHaloAllSnaps[i].PID,&StellarHaloAllSnaps[i]);
+	}
 //ConstructHashTable(GP.TotNumTagsAllSnaps,StellarHaloAllSnaps);
 #ifdef DoParallel
 if(ThisTask==0)
 #endif
 printf("table inside load:%p\n",table);
 
-printf("key test:%lld, IsStar:%d \n",table->table[17940]->key,IsStar(table->table[17940]));
+//printf("key test:%lld, IsStar:%d \n",table->table[17940]->key,IsStar(table->table[17940]));
 if(table->table[17940]->star !=NULL)
    printf("key test:%lld, IsStar:%d, snap:%d \n",table->table[17940]->key,IsStar(table->table[17940]),table->table[17940]->star->Snap);
 else
@@ -280,9 +283,13 @@ return sentinel;
 void InsertKey(struct HashTable *table,long long key, struct tagged_particle *tag)
 {
 long long index;
-index=tag->PID;
+index=key;//tag->PID; in this case both are the same but nut in general
+printf("the key in insert:%lld\n",key);
 if(!ContainsElement(table->table[index],key))
+	{
+	printf("the key in insert- contains:%lld\n",key);
 	AddElement(table->table[index],index,tag);
+	}
 //#ifdef DoParallel
 //if(ThisTask==0)
 //#endif
@@ -299,7 +306,7 @@ struct LinkedList *link;
 if((link= (struct LinkedList*)malloc(sizeof(struct LinkedList)))==NULL)
 	printf("Couldn't allocate memory for linked list!\n");
 link->key= key;
-//printf("the key:%lld\n",link->key);
+printf("the key in add:%lld\n",link->key);
 link->star=tag;
 if(tag==NULL)
 	printf("tag is null!\n");
