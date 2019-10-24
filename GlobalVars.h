@@ -1345,7 +1345,7 @@ extern MPI_Comm MPI_CommLocal;
 struct HashTable {
     struct LinkedList **table;
     size_t size;
-}*table;
+};//*table;
 struct HashTable *EmptyTable(size_t);
 
 struct LinkedList {

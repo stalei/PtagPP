@@ -51,7 +51,7 @@ void SaveInBinary(void);
 
 void HashTags(int);
 long long ReadSnapHeader(char *);
-long long LoadAllTags(int,int);
+long long LoadAllTags(int,int,struct HashTable *);
 void ConstructHashTable(struct HashTable *,long long,struct tagged_particle *);
 struct HashTable *EmptyTable(size_t);
 struct LinkedList *NewLinkedList(void);
