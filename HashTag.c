@@ -59,7 +59,7 @@ if(TotalCount != GP.TotNumTagsAllSnaps)
 
 fflush(stdout);
 
-//AnalyzeHashTable(table);//sends this hashtable to the analysis code!
+AnalyzeHashTable(table);//sends this hashtable to the analysis code!
 
 //////////////
 #ifdef DoParallel
@@ -114,12 +114,7 @@ long long LoadAllTags(int snapi,int snapf,struct HashTable *table) //return coul
 int tf,i;
 long long c=0;
 printf("Total count of tags (including all duplicated particles:%lld\n",GP.TotNumTagsAllSnaps);
-//struct HashTable *table=EmptyTable(GP.TotNumPart);
-//if(table==NULL)
-//	{
-//	printf("can't allocate memory for hashtable!\n");
- //       EndRun(141,CurrentFile);
-//	}
+
 if((StellarHaloAllSnaps=(struct tagged_particle *)malloc(GP.TotNumTagsAllSnaps*sizeof(struct tagged_particle)))==NULL)
 	{	
 	printf("can't allocate memory for all tags!\n");
@@ -161,15 +156,15 @@ for(tf=snapi;tf<=snapf;tf++)
 	        }
 	status= H5Dread(dataset,TagDatatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, StellarHalo);
 	if(status<0) printf("Error in reading data from the file:%s\n",TagFile);
-	for(i=0;i<rows;i++)
-		StellarHaloAllSnaps[c+i]=StellarHalo[i];
+	//for(i=0;i<rows;i++)
+	//	StellarHaloAllSnaps[c+i]=StellarHalo[i];
 	for(i=0;i<rows;i++)
 		InsertKey(table,StellarHalo[i].PID,&StellarHalo[i]);
-	//free(StellarHalo);
-	//H5Tclose(TagDatatype);
-	//H5Dclose(dataset);
-	//H5Sclose(dataspace);
-	//H5Fclose(file);
+	free(StellarHalo);
+	H5Tclose(TagDatatype);
+	H5Dclose(dataset);
+	H5Sclose(dataspace);
+	H5Fclose(file);
 	c+=rows;
 	}/*B*/
 //for(i=0;i<GP.TotNumTagsAllSnaps;i++)
@@ -177,10 +172,10 @@ for(tf=snapi;tf<=snapf;tf++)
 	//printf("Tag add:%lld\n",StellarHaloAllSnaps[i].PID);
 ///	InsertKey(table,StellarHaloAllSnaps[i].PID,&StellarHaloAllSnaps[i]);
 //	}
-#ifdef DoParallel
-if(ThisTask==0)
-#endif
-printf("table inside load:%p\n",table);
+//#ifdef DoParallel
+//if(ThisTask==0)
+//#endif
+//printf("table inside load:%p\n",table);
 
 //printf("key test:%lld, IsStar:%d \n",table->table[17940]->key,IsStar(table->table[17940]));
 //if(table->table[17940]->star !=NULL)
