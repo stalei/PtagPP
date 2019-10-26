@@ -60,7 +60,7 @@ struct tagged_particle *FinalStellarHalo;
 
 if((FinalStellarHalo=(struct tagged_particle *)malloc(GP.TotNumStars*sizeof(struct tagged_particle)))==NULL)
 	printf("couldn't allocate memory for final stellar halo\n");
-ExtractFinalHalo(IdList,table,FinalStellarHalo);
+//ExtractFinalHalo(IdList,table,FinalStellarHalo);
 
 
 WriteFinalTag(FinalStellarHalo,GP.TotNumStars);
@@ -100,7 +100,7 @@ c=0;
 for(i=0;i<GP.TotNumPart;i++)
 	{
 	//printf("counting:%lld\n",i);
-	if(table->table[i]->next !=NULL)
+	if(table->table[i]->next !=0)//NULL)
 	   {
 	//if(IsStar(table->table[i]))
 		IdList[c]=i;

@@ -62,8 +62,8 @@ fflush(stdout);
 NumOfStars=0;
 NumOfStarsPre=0;
 
-NumOfStars=CountStars(TagFilesCount, TagFilesPath);
-counter+=NumOfStars;
+counter=CountStars(TagFilesCount, TagFilesPath); //counter of stars for current snapshot current process
+//counter+=NumOfStars;
 #ifdef DoParallel
 //MPI_Barrier(MPI_COMM_WORLD);
 MPI_Allreduce(&counter, &countersum, 1, MPI_LONG_LONG_INT, MPI_SUM,MPI_COMM_WORLD);
@@ -71,8 +71,8 @@ MPI_Allreduce(&counter, &countersum, 1, MPI_LONG_LONG_INT, MPI_SUM,MPI_COMM_WORL
 countersum=counter;
 #endif
 GP.TotNumTagsAllSnaps=countersum;
-
-printf("Total Number of Tagged Stars:%ld for snap %d\n",NumOfStars,snap);
+NumOfStars=counter;
+printf("Total Number of Tagged Stars: all snapshots=%ld for snap %d=%ld\n",GP.TotNumTagsAllSnaps,snap,NumOfStars);
 
 NumOfStarsPre=CountStars(TagFilesCountPre, TagFilesPathPre);
 
