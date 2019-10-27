@@ -60,7 +60,7 @@ struct tagged_particle *FinalStellarHalo;
 
 if((FinalStellarHalo=(struct tagged_particle *)malloc(GP.TotNumStars*sizeof(struct tagged_particle)))==NULL)
 	printf("couldn't allocate memory for final stellar halo\n");
-//ExtractFinalHalo(IdList,table,FinalStellarHalo);
+ExtractFinalHalo(IdList,table,FinalStellarHalo);
 
 
 WriteFinalTag(FinalStellarHalo,GP.TotNumStars);

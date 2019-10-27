@@ -3371,7 +3371,7 @@ FILE *SM_File, *M_File;
 typedef struct StellarMassRecord{
 MyDouble Pos[3];
 MyDouble SM;
-}SMRecord;
+};//SMRecord;
 //typedef struct StellarMassRecord SMRecord;
  if(!(SM_File=fopen(StellarMassFile,"ab")))
         printf("Can't open tagged particles file at %s\n",StellarMassFile);

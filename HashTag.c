@@ -40,8 +40,9 @@ fflush(stdout);
 char SnapFile[500];
 sprintf(SnapFile,"%s/snap_%03d",GP.SnapDir,snap);
 ReadSnapHeader(SnapFile);
-
+GP.TotNumTagsAllSnaps=CountAllTags(GP.FirstSnap,snap);
 fflush(stdout);
+
 struct HashTable *table=EmptyTable(GP.TotNumPart);
 if(table==NULL)
         {
@@ -108,6 +109,77 @@ if(header.num_files <= 1)
   return GP.TotNumPart;
 }
 
+long long CountAllTags(int snapi,int snapf) //return could be used just to check if we coverd all tags correctly otherwise we don't need the count as we know it from previous part.
+{
+//long long id,tagid;
+int tf;
+long long c=0;
+//printf("Total count of tags (including all duplicated particles:%lld\n",GP.TotNumTagsAllSnaps);
+
+//if((StellarHaloAllSnaps=(struct tagged_particle *)malloc(GP.TotNumTagsAllSnaps*sizeof(struct tagged_particle)))==NULL)
+  //      {
+  //      printf("can't allocate memory for all tags!\n");
+  //      EndRun(146,CurrentFile);
+  //      }
+c=0;
+//struct tagged_particle *StellarHalo;
+for(tf=snapi;tf<=snapf;tf++)
+        {/*B*/
+        hid_t file,dataset,TagDatatype,dataspace;
+        size_t size;
+        hsize_t dims_out[2];
+        //herr_t status;
+        long long rows;
+        char TagFile[500];
+        char *DSName="FullTag";
+        int rank,status_n;
+        sprintf(TagFile,"%s/tag_%03d.h5",GP.OutputDir,tf);
+        file = H5Fopen(TagFile, H5F_ACC_RDONLY, H5P_DEFAULT);
+        fflush(stdout);
+        dataset = H5Dopen(file,DSName,H5P_DEFAULT);
+        TagDatatype=H5Dget_type(dataset);
+        size  = H5Tget_size(TagDatatype);
+        if(size != sizeof(struct tagged_particle))
+        {
+            printf("size mismatch, data size:%d, struct tag size:%lu d\n",(int)size,sizeof(struct tagged_particle));
+        }
+        dataspace = H5Dget_space(dataset);    /* dataspace handle*/
+        rank = H5Sget_simple_extent_ndims(dataspace);
+        status_n  = H5Sget_simple_extent_dims(dataspace, dims_out, NULL);
+        if (status_n<0 || file<0 ) printf("Error in reading file or dimensions\n");
+        rows = dims_out[0];
+        if(rank<0)
+            printf("I coulldn't read the file:%s\n",TagFile);
+        //if((StellarHalo=(struct tagged_particle *)malloc(rows*size))==NULL)
+        //        {
+        //        printf("can't allocate memory for stellar halo for snapshot %d!\n",tf);
+        //        EndRun(185,CurrentFile);
+        //        }
+        //status= H5Dread(dataset,TagDatatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, StellarHalo);
+        //if(status<0) printf("Error in reading data from the file:%s\n",TagFile);
+        //for(i=0;i<rows;i++)
+        //      StellarHaloAllSnaps[c+i]=StellarHalo[i];
+        //for(i=0;i<rows;i++)
+        //        InsertKey(table,StellarHalo[i].PID,&StellarHalo[i]);
+        //free(StellarHalo);
+        H5Tclose(TagDatatype);
+        H5Dclose(dataset);
+        H5Sclose(dataspace);
+        H5Fclose(file);
+        c+=rows;
+        //printf("count up to snap %d is %lld\n",tf,c);
+        }/*B*/
+#ifdef DoParallel
+if(ThisTask==0)
+printf("Task %d finished loading all tagged files in hash table!\n",ThisTask);
+#else
+printf("I finished loading all tagged files in hash table!\n");
+#endif
+
+return c;
+}
+
+
 long long LoadAllTags(int snapi,int snapf,struct HashTable *table) //return could be used just to check if we coverd all tags correctly otherwise we don't need the count as we know it from previous part.
 {
 //long long id,tagid;
@@ -156,22 +228,23 @@ for(tf=snapi;tf<=snapf;tf++)
 	        }
 	status= H5Dread(dataset,TagDatatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, StellarHalo);
 	if(status<0) printf("Error in reading data from the file:%s\n",TagFile);
-	//for(i=0;i<rows;i++)
-	//	StellarHaloAllSnaps[c+i]=StellarHalo[i];
 	for(i=0;i<rows;i++)
-		InsertKey(table,StellarHalo[i].PID,&StellarHalo[i]);
+		StellarHaloAllSnaps[c+i]=StellarHalo[i];
+	//for(i=0;i<rows;i++)
+	//	InsertKey(table,StellarHalo[i].PID,&StellarHalo[i]);
 	free(StellarHalo);
 	H5Tclose(TagDatatype);
 	H5Dclose(dataset);
 	H5Sclose(dataspace);
 	H5Fclose(file);
 	c+=rows;
+	//printf("count up to snap %d is %lld\n",tf,c);
 	}/*B*/
-//for(i=0;i<GP.TotNumTagsAllSnaps;i++)
-	//{
+for(i=0;i<GP.TotNumTagsAllSnaps;i++)
+	{
 	//printf("Tag add:%lld\n",StellarHaloAllSnaps[i].PID);
-///	InsertKey(table,StellarHaloAllSnaps[i].PID,&StellarHaloAllSnaps[i]);
-//	}
+	InsertKey(table,StellarHaloAllSnaps[i].PID,&StellarHaloAllSnaps[i]);
+	}
 //#ifdef DoParallel
 //if(ThisTask==0)
 //#endif
