@@ -251,7 +251,9 @@ int Len;
 ////double Vel[3];
 long long MBID; //most bound ID  long long  MostBoundID;
 double BindingEnergy; //Myfloat
-
+double Mvir;
+double Rvir;
+double infallMvir;
 }tagged_p,*AllStars,*AllStarsPre,*StellarHaloAllSnaps;//,*tagged_list;
 //
 

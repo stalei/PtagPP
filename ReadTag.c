@@ -208,6 +208,9 @@ H5Tinsert(TagDatatype, "Time", HOFFSET(tagged_tmp, Time), H5T_NATIVE_DOUBLE);
 H5Tinsert(TagDatatype, "Len", HOFFSET(tagged_tmp, Len), H5T_NATIVE_INT);
 H5Tinsert(TagDatatype, "MBID", HOFFSET(tagged_tmp, MBID), H5T_NATIVE_LLONG);
 H5Tinsert(TagDatatype, "BindingEnergy", HOFFSET(tagged_tmp, BindingEnergy), H5T_NATIVE_DOUBLE);
+H5Tinsert(TagDatatype, "Mvir", HOFFSET(tagged_tmp, Mvir), H5T_NATIVE_DOUBLE);
+H5Tinsert(TagDatatype, "Rvir", HOFFSET(tagged_tmp, Rvir), H5T_NATIVE_DOUBLE);
+H5Tinsert(TagDatatype, "infallMvir", HOFFSET(tagged_tmp, infallMvir), H5T_NATIVE_DOUBLE);
 H5Tclose(TagDatatype);
 return;
 }

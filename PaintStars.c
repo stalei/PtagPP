@@ -108,6 +108,9 @@ void CalculateStellarProperties(double ti,double tf, int galaxy, unsigned long i
 // we also have to convert between units!
 AllStars[id].StellarMass=(tf-ti)*SageOutput[galaxy].Sfr/AllStars[id].Len;
 AllStars[id].ZZ=SageOutput[galaxy].MetalsStellarMass/AllStars[id].Len;
+AllStars[id].Mvir=SageOutput[galaxy].Mvir;
+AllStars[id].Rvir=SageOutput[galaxy].Rvir;
+AllStars[id].infallMvir=SageOutput[galaxy].infallMvir;
 return;
 }
 double FindTime(struct tagged_particle *Stars)
