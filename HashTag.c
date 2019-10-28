@@ -123,7 +123,8 @@ long long c=0;
   //      }
 c=0;
 //struct tagged_particle *StellarHalo;
-for(tf=snapi;tf<=snapf;tf++)
+//for(tf=snapi;tf<=snapf;tf++)
+for(tf=snapf;tf>=snapi;tf--)
         {/*B*/
         hid_t file,dataset,TagDatatype,dataspace;
         size_t size;
@@ -194,7 +195,8 @@ if((StellarHaloAllSnaps=(struct tagged_particle *)malloc(GP.TotNumTagsAllSnaps*s
 	}
 c=0;
 struct tagged_particle *StellarHalo;
-for(tf=snapi;tf<=snapf;tf++)
+//for(tf=snapi;tf<=snapf;tf++)
+for(tf=snapf;tf>=snapi;tf--) //insertion in hash table happens backward, old one is at the end
 	{/*B*/
 	hid_t file,dataset,TagDatatype,dataspace;
 	size_t size;
