@@ -106,11 +106,12 @@ void CalculateStellarProperties(double ti,double tf, int galaxy, unsigned long i
 // I have to add more sophisticated calculations but let's start with simple method
 // we have to devide this mass between all particles
 // we also have to convert between units!
-AllStars[id].StellarMass=(tf-ti)*SageOutput[galaxy].Sfr/AllStars[id].Len;
+AllStars[id].StellarMass=(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/AllStars[id].Len;
 AllStars[id].ZZ=SageOutput[galaxy].MetalsStellarMass/AllStars[id].Len;
 AllStars[id].Mvir=SageOutput[galaxy].Mvir;
 AllStars[id].Rvir=SageOutput[galaxy].Rvir;
 AllStars[id].infallMvir=SageOutput[galaxy].infallMvir;
+AllStars[id].Age=GetAge(AllStars[id].Time);
 return;
 }
 double FindTime(struct tagged_particle *Stars)
@@ -119,10 +120,29 @@ return Stars[0].Time;
 }
 double GetAge(double a)
 {
-double z=1/a-1;
-double H0=100*GP.HubbleParam;
-double t=2/(3*H0*H0*H0*sqrt(GP.Omega0+GP.OmegaLambda)*pow(1+z,3/2));
-t/=3.086e+19; //Mpc ->km
-t/=(3600*24*365.26); //s ->year
-return t;
+//high redshift approximation:
+//double z=1/a-1;
+//double H0=100*GP.HubbleParam;
+//double t=2/(3*H0*sqrt(GP.Omega0+GP.OmegaLambda)*pow(1+z,3/2));
+
+//or numerical integral
+//get aMax from previous files -> GP.aMax
+double age,ageGyr,t = 0;
+int  n=1000,i;         // number of points in integrals
+double WR=0,ai,adot;
+double H0=GP.HubbleParam*100;
+double Tyr = 977.8;    // coefficent for converting 1/H into Gyr
+for(i=0;i<n;i++)
+{
+    ai = a*(i+0.5)/n;
+    adot = sqrt((GP.Omega0/ai)+(WR/(ai*ai))+(GP.OmegaLambda*ai*ai));
+    t+= 1./adot;
+}
+
+  age = a*t/n;
+  ageGyr = (Tyr/H0)*age;
+
+//t/=3.086e+19; //Mpc ->km
+//t/=(3600*24*365.26); //s ->year
+return ageGyr;
 }
