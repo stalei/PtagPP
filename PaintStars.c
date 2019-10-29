@@ -37,8 +37,8 @@ int GalID=-1;
 id=0; //particle id
 fflush(stdout);
 printf("test time:%g\n",AllStars[0].Time);
-Tf=FindTime(AllStars);
-Ti=FindTime(AllStarsPre);
+Tf=GetAge(FindTime(AllStars));
+Ti=GetAge(FindTime(AllStarsPre));
 printf("Time for snap:%d is %g & for snap:%d is %g.\nTime difference is: %g\n",snap,Tf,snap-1,Ti,Tf-Ti);
 int iter,iteration=4;
 //for on all tagged particles
@@ -117,7 +117,12 @@ double FindTime(struct tagged_particle *Stars)
 {
 return Stars[0].Time;
 }
-//double FindTime(int snap)
-//{
-//return 0;
-//}
+double GetAge(double a)
+{
+double z=1/a-1;
+double H0=100*GP.HubbleParam;
+double t=2/(3*H0*H0*H0*sqrt(GP.Omega0+GP.OmegaLambda)*pow(1+z,3/2));
+t/=3.086e+19; //Mpc ->km
+t/=(3600*24*365.26); //s ->year
+return t;
+}

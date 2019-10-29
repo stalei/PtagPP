@@ -126,9 +126,13 @@ for(i=0;i<GP.TotNumStars;i++)
 		FinalStellarHalo[i].StellarMass += list->next->star->StellarMass;
 		FinalStellarHalo[i].ZZ+=list->next->star->ZZ;
 		FinalStellarHalo[i].Age=list->next->star->Age; //not += just take the laste age!
+		//if(list->next->star->Snap==GP.LastSnap) may not be tagged in the last snap
+		//{
+		//this is where they tagged last time not their position at the last snapshot
 		FinalStellarHalo[i].Pos[0]=list->next->star->Pos[0];
 		FinalStellarHalo[i].Pos[1]=list->next->star->Pos[1];
 		FinalStellarHalo[i].Pos[2]=list->next->star->Pos[2];
+		//}
 		list=list->next;
 	}
 }

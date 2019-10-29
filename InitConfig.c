@@ -103,11 +103,28 @@ id[nt++]=INT;
 
 strcpy(tag[nt],"BufferSize");
 addr[nt]=&GP.BufferSize;
-id[nt++]=REAL;
+id[nt++]=INT;
 
 strcpy(tag[nt],"TimeLimit");
 addr[nt]=&GP.TimeLimit;
 id[nt++]=REAL;
+
+strcpy(tag[nt],"Omega0");
+addr[nt]=&GP.Omega0;
+id[nt++]=REAL;
+
+strcpy(tag[nt],"OmegaLambda");
+addr[nt]=&GP.OmegaLambda;
+id[nt++]=REAL;
+
+strcpy(tag[nt],"OmegaBaryon");
+addr[nt]=&GP.OmegaBaryon;
+id[nt++]=REAL;
+
+strcpy(tag[nt],"HubbleParam");
+addr[nt]=&GP.HubbleParam;
+id[nt++]=REAL;
+
 
       if((fd = fopen(fname, "r")))
 	{

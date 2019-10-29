@@ -146,7 +146,11 @@ char SageDir[500];
 char TagDir[500];
 char SnapDir[500];
 char OutputDir[500];
-double BufferSize;
+int BufferSize;
+double Omega0;
+double OmegaLambda;
+double OmegaBaryon;
+double HubbleParam;
 //int SnapFormat;
 ////
 int CoolingOn;

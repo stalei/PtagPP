@@ -48,7 +48,7 @@ long long CountTotStarsPar(int,int);
 long long CountTotStars(int,int);
 #endif
 void SaveInBinary(void);
-
+double GetAge(double);
 void HashTags(int);
 long long ReadSnapHeader(char *);
 long long CountAllTags(int,int);
