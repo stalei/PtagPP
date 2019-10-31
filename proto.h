@@ -67,7 +67,7 @@ void DeleteLinkedList(struct LinkedList *);
 
 
 
-void AnalyzeHashTable(struct HashTable *);
+void AnalyzeHashTable(int ,struct HashTable *);
 bool IsStar(struct LinkedList *);
 int IsTagged(struct LinkedList *);
 long long CountUniqueStars(struct HashTable *,long long *);

@@ -60,7 +60,7 @@ if(TotalCount != GP.TotNumTagsAllSnaps)
 
 fflush(stdout);
 
-AnalyzeHashTable(table);//sends this hashtable to the analysis code!
+AnalyzeHashTable(snap,table);//sends this hashtable to the analysis code!
 
 //////////////
 #ifdef DoParallel

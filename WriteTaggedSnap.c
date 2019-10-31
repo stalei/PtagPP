@@ -30,6 +30,7 @@
 void WriteTaggedSnap(int snap)
 {
 sprintf(CurrentFile,"WriteTaggedSnap.c");
+/*
 long long int StarCount=0,TotalCount=0;
 #ifdef DoParallel
 //if(ThisTask==0)
@@ -45,7 +46,7 @@ ReadSnap(SnapFile);
 
 fflush(stdout);
 
-GP.TotNumStarsAllSnaps=0;
+//GP.TotNumStarsAllSnaps=0;
 
 #ifdef DoParallel
 StarCount=CountTotStarsPar(GP.FirstSnap,snap); //counts and changes the type from 1 (halo) -> 4 (star)
@@ -86,6 +87,7 @@ SaveInBinary();
 #ifdef DoParallel
 if(ThisTask==0)
 #endif
+*/
 printf("I finished writing tagged snap %d.☻ \n",snap);
 return;
 }
@@ -122,13 +124,13 @@ if(blksize1 != 256 || blksize2 != 256)
 	fflush(stdout);
 	EndRun(63,CurrentFile);// Probable error is wrong size of fill[] in header file. Needs to be 256 bytes in total.
 }
-GP.TotNumPart=0;
-GP.TotNumStars=0;
+//GP.TotNumPart=0;
+//GP.TotNumStars=0;
 if(header.num_files <= 1)
 	for(i = 0; i < 6; i++)
 	  {
 	    header.npartTotal[i] = header.npart[i];
-	    GP.TotNumPart+=header.npart[i];
+	    //GP.TotNumPart+=header.npart[i];
 	    printf("from header:%u \n",header.npartTotal[i]);
 	  }
 
