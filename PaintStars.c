@@ -106,7 +106,7 @@ void CalculateStellarProperties(double ti,double tf, int galaxy, unsigned long i
 // I have to add more sophisticated calculations but let's start with simple method
 // we have to devide this mass between all particles
 // we also have to convert between units!
-AllStars[id].StellarMass=(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/AllStars[id].Len;
+AllStars[id].StellarMass=1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/AllStars[id].Len;
 AllStars[id].ZZ=SageOutput[galaxy].MetalsStellarMass/AllStars[id].Len;
 AllStars[id].Mvir=SageOutput[galaxy].Mvir;
 AllStars[id].Rvir=SageOutput[galaxy].Rvir;
