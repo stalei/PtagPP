@@ -245,6 +245,8 @@ long long PID; //unsigned int PID;
 int HaloIndex;
 int SubhaloIndex;
 int GalIndex;
+int GalNo;
+int TreeIndex;
 float AA;
 float Age;
 float ZZ;
@@ -258,6 +260,7 @@ double BindingEnergy; //Myfloat
 double Mvir;
 double Rvir;
 double infallMvir;
+float LastMajorMerger;
 }tagged_p,*AllStars,*AllStarsPre,*StellarHaloAllSnaps;//,*tagged_list;
 //
 

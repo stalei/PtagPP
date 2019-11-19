@@ -200,6 +200,8 @@ H5Tinsert(TagDatatype, "PID", HOFFSET(tagged_tmp, PID), H5T_NATIVE_LLONG);
 H5Tinsert(TagDatatype, "HaloIndex", HOFFSET(tagged_tmp, HaloIndex), H5T_NATIVE_INT);
 H5Tinsert(TagDatatype, "SubhaloIndex", HOFFSET(tagged_tmp, SubhaloIndex), H5T_NATIVE_INT);
 H5Tinsert(TagDatatype, "GalIndex", HOFFSET(tagged_tmp, GalIndex), H5T_NATIVE_INT);
+H5Tinsert(TagDatatype, "GalNo", HOFFSET(tagged_tmp, GalNo), H5T_NATIVE_INT);
+H5Tinsert(TagDatatype, "TreeIndex", HOFFSET(tagged_tmp, TreeIndex), H5T_NATIVE_INT);
 H5Tinsert(TagDatatype, "AA", HOFFSET(tagged_tmp, AA), H5T_NATIVE_FLOAT);
 H5Tinsert(TagDatatype, "Age", HOFFSET(tagged_tmp, Age), H5T_NATIVE_FLOAT);
 H5Tinsert(TagDatatype, "ZZ", HOFFSET(tagged_tmp, ZZ), H5T_NATIVE_FLOAT);
@@ -211,7 +213,9 @@ H5Tinsert(TagDatatype, "BindingEnergy", HOFFSET(tagged_tmp, BindingEnergy), H5T_
 H5Tinsert(TagDatatype, "Mvir", HOFFSET(tagged_tmp, Mvir), H5T_NATIVE_DOUBLE);
 H5Tinsert(TagDatatype, "Rvir", HOFFSET(tagged_tmp, Rvir), H5T_NATIVE_DOUBLE);
 H5Tinsert(TagDatatype, "infallMvir", HOFFSET(tagged_tmp, infallMvir), H5T_NATIVE_DOUBLE);
-H5Tclose(TagDatatype);
+H5Tinsert(TagDatatype, "LastMajorMerger", HOFFSET(tagged_tmp, LastMajorMerger), H5T_NATIVE_FLOAT);
+
+//H5Tclose(TagDatatype);
 return;
 }
 
