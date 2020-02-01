@@ -108,6 +108,7 @@ void CalculateStellarProperties(double ti,double tf, int galaxy, unsigned long i
 // we also have to convert between units!
 AllStars[id].StellarMass=1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/AllStars[id].Len;
 AllStars[id].GalNo=galaxy;//SageOutput[galaxy].
+AllStars[id].HaloIndex=SageOutput[galaxy].FOFHaloIndex;
 AllStars[id].TreeIndex=SageOutput[galaxy].TreeIndex;
 AllStars[id].ZZ=SageOutput[galaxy].MetalsStellarMass/AllStars[id].Len;
 AllStars[id].Mvir=SageOutput[galaxy].Mvir;

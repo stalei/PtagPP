@@ -72,26 +72,26 @@ for(TargetSnap=si; TargetSnap<=sf;TargetSnap+=step)
 {
 	//TargetSnap=GP.FirstSnap;
 	ReadSage(TargetSnap);
-	//#ifdef DoParallel
-	//MPI_Barrier(MPI_COMM_WORLD);
-	//#endif
+	#ifdef DoParallel
+	MPI_Barrier(MPI_COMM_WORLD);
+	#endif
 
 	ReadTag(TargetSnap);
-	//#ifdef DoParallel
+	#ifdef DoParallel
 	//fflush(stdout);
-	//MPI_Barrier(MPI_COMM_WORLD);
-	//#endif
+	MPI_Barrier(MPI_COMM_WORLD);
+	#endif
 
 	PaintStars(TargetSnap);
-  //      #ifdef DoParallel
+        #ifdef DoParallel
         //fflush(stdout);
-        //MPI_Barrier(MPI_COMM_WORLD);
-    //    #endif
+        MPI_Barrier(MPI_COMM_WORLD);
+        #endif
 	WriteTag(TargetSnap);
-        //#ifdef DoParallel
+        #ifdef DoParallel
         //fflush(stdout);
-        //MPI_Barrier(MPI_COMM_WORLD);
-        //#endif
+        MPI_Barrier(MPI_COMM_WORLD);
+        #endif
 	//free(AllStars);
 	//free(AllStarsPre);
 }
