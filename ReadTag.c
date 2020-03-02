@@ -38,14 +38,14 @@ TagFilesCount = CountTagFiles(snap);
 TagFilesCountPre = CountTagFiles(snap-1);
 if (TagFilesCount<1){
 	printf("No tag file for snap %d!\n",snap);
-	EndRun(30,CurrentFile);
+	//EndRun(30,CurrentFile);
 	}
 else
    printf("I found %d tag file(s) for snapshot %d.\n", TagFilesCount,snap);
 
 if (TagFilesCountPre<1){
         printf("No tag file for snap %d!\n",snap-1);
-        EndRun(30,CurrentFile);
+        //EndRun(30,CurrentFile);
         }
 else
    printf("I found %d tag file(s) for snapshot %d.\n", TagFilesCountPre,snap-1);
@@ -57,6 +57,7 @@ TagFilesPathPre = (struct Path_Names*)malloc(TagFilesCountPre * sizeof(struct Pa
 
 ReadTagFNames(snap,TagFilesPath);// note that 0th file is the last!
 ReadTagFNames(snap-1,TagFilesPathPre);// it is the same as previous, but anyway!
+printf("Tag file names are read for snap %d",snap);
 fflush(stdout);
 //printf("sample tag file:%s\n",TagFilesPath[0].paths);
 NumOfStars=0;
@@ -72,14 +73,14 @@ countersum=counter;
 #endif
 GP.TotNumTagsAllSnaps=countersum;
 NumOfStars=counter;
-printf("Total Number of Tagged Stars: all snapshots=%ld for snap %d=%ld\n",GP.TotNumTagsAllSnaps,snap,NumOfStars);
+printf("Total Number of Tagged Stars: all snapshots=%lld for snap %d=%ld\n",GP.TotNumTagsAllSnaps,snap,NumOfStars);
 
 NumOfStarsPre=CountStars(TagFilesCountPre, TagFilesPathPre);
 
 
-#ifdef DoParallel
-if(ThisTask==0)
-#endif
+//#ifdef DoParallel
+//if(ThisTask==0)
+//#endif
 printf("Total Number of Tagged Stars:%ld for snap %d\n",NumOfStarsPre,snap-1);
 
 
@@ -95,27 +96,27 @@ if((AllStarsPre=(struct tagged_particle *)malloc(NumOfStarsPre*sizeof(struct tag
         EndRun(72,CurrentFile);
     }
 
-
+printf("Let's read and combine tags for snap %d",snap);
 ReadCombineTags(TagFilesCount,TagFilesPath,AllStars);
 
-#ifdef DoParallel
-if(ThisTask==0)
-#endif
+//#ifdef DoParallel
+//if(ThisTask==0)
+//#endif
 printf("All tags are loaded for snap:%d\n",snap);
 
 ReadCombineTags(TagFilesCountPre,TagFilesPathPre,AllStarsPre);
 
-#ifdef DoParallel
-if(ThisTask==0){
-#endif
+//#ifdef DoParallel
+//if(ThisTask==0){
+//#endif
 printf("All tags are loaded for snap:%d\n",snap-1);
 
 printf("sample star:%g\n",AllStars[500].Pos[0]);
 //PrintStar(673);
 PrintStar(0);
-#ifdef DoParallel
-}
-#endif
+//#ifdef DoParallel
+//}
+//#endif
 //PrintStar(10000);
 //SavePositions();//just a test
 ////////////////// Just remove this later
@@ -175,10 +176,10 @@ struct dirent *dp;
   c++;
   }
   closedir(fd);
-#ifdef DoParallel
-if(ThisTask==0)
-#endif
-printf("I Finished reading tag files-name(s)\n");
+//#ifdef DoParallel
+//if(ThisTask==0)
+//#endif
+printf("Processor %d Finished reading tag files-name(s)\n",ThisTask);
 return;
 }
 
@@ -313,7 +314,7 @@ return c;
 void ReadCombineTags(int count,struct Path_Names *TagPath,struct tagged_particle *Stars)
 {
 
-printf("Starting reading and combining tags!\n...\n");
+printf("Processor %d Starting reading and combining tags!\n...\n",ThisTask);
 int c;
 hid_t       file, dataset,TagDatatype;         /* handles */
 hid_t        dataspace;
@@ -414,13 +415,13 @@ c+=rows;
 //#ifdef DoParallel
 //if(ThisTask==0)
 //#endif
-printf("☆ ★ %d...✓ \n ",i);
+//printf("☆ ★ %d...✓ \n ",i);
 }  //end of for i
 
 //#ifdef DoParallel
 //if(ThisTask==0)
 //#endif
-printf("\n\nRead and Combine is finished!\n");
+printf("\n\nRead and Combine is finished!(Processor:%d)\n",ThisTask);
 return;
 }
 void PrintStar(long int index)
