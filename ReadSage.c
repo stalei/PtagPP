@@ -24,6 +24,7 @@
 void ReadSage(int snap)
 {
 sprintf(CurrentFile,"ReadSage.c");
+int i;
 #ifdef DoParallel
 if(ThisTask==0)
 #endif
@@ -62,7 +63,8 @@ printf("Galaxy info loaded for snapshot:%d\n",snap);
 //if(snap==GP.FirstSnap)
 //{
 printf("Sample galaxy for snapshot:%d in processor %d\n",snap,ThisTask);
-PrintGalaxyInfo(SageOutput,10);
+for(i=0;i<NumGalaxies;i++)
+   PrintGalaxyInfo(SageOutput,i);
 //}
 //printf("Sample galaxy for snapshot:%d\n",snap);
 //PrintGalaxyInfo(SageOutput,10);
@@ -82,10 +84,10 @@ PrintGalaxyInfo(SageOutput,10);
    fill_gal(totmal);
    free(treepath);
 */
-#ifdef DoParallel
-if(ThisTask==0)
-#endif
-printf("Reading the sage file is done.\n");
+//#ifdef DoParallel
+//if(ThisTask==0)
+//#endif
+printf("Reading the sage file for snap %d,in process %d is done.\n",snap,ThisTask);
 //#ifdef DoParallel
 //}
 //#endif
@@ -96,10 +98,10 @@ return;
 /////// 1
 void LoadSageFiles(int snap)
 {
-#ifdef DoParallel
-if(ThisTask==0)
-#endif
-   printf("Reading the sage file.\n");
+//#ifdef DoParallel
+//if(ThisTask==0)
+//#endif
+ //printf("Reading the sage file.\n");
     //int numfiles;
 	//int NumSfiles; // change to global later!
     SageFilesCount = CountSageFiles(snap);
@@ -122,15 +124,15 @@ if(ThisTask==0)
 //#ifdef DoParallel
 //if(ThisTask==0){
 //#endif
-#ifdef DoParallel
-if(ThisTask==0){
-#endif
+//#ifdef DoParallel
+//if(ThisTask==0){
+//#endif
    //printf("first path for snap %d is:%s\n",snap,SageFilesPath[0].paths);
    //printf("first path for snap %d is:%s\n",snap-1,SageFilesPathPre[0].paths);
 
-#ifdef DoParallel
-}
-#endif
+//#ifdef DoParallel
+//}
+//#endif
 
 
     return;
