@@ -110,11 +110,11 @@ AllStars[id].StellarMass=1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/Al
 AllStars[id].GalNo=galaxy;//SageOutput[galaxy].
 AllStars[id].HaloIndex=SageOutput[galaxy].FOFHaloIndex;
 AllStars[id].TreeIndex=SageOutput[galaxy].TreeIndex;
-AllStars[id].ZZ=SageOutput[galaxy].MetalsStellarMass/AllStars[id].Len;
+AllStars[id].ZZ=SageOutput[galaxy].MetalsStellarMass/AllStars[id].Len;//lower than expected
 AllStars[id].Mvir=SageOutput[galaxy].Mvir;
 AllStars[id].Rvir=SageOutput[galaxy].Rvir;
 AllStars[id].infallMvir=SageOutput[galaxy].infallMvir;
-AllStars[id].Age=GetAge(AllStars[id].Time);
+AllStars[id].Age=GetAge(AllStars[id].Time);//this makes sense
 AllStars[id].LastMajorMerger=SageOutput[galaxy].LastMajorMerger;
 return;
 }

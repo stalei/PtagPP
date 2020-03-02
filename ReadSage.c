@@ -30,12 +30,13 @@ if(ThisTask==0)
 printf("Extracting information from the sage file.\n");
 //1
 LoadSageFiles(snap);
+printf("Sage file path is loaded for snap %d.\n",snap);
+fflush(stdout);
 //2
 NumGalaxies = ReadSageHeader(SageFilesCount,SageFilesPath);
 NumGalaxiesPre = ReadSageHeader(SageFilesCountPre,SageFilesPathPre);
 
-printf("Recovered %d galaxies for snapshot %d.\n",NumGalaxies,snap);
-
+printf("Recovered %d galaxies for snapshot %d. and ",NumGalaxies,snap);
 printf("Recovered %d galaxies for snapshot %d.\n",NumGalaxiesPre,snap-1);
 
 
@@ -53,15 +54,16 @@ if((SageOutputPre = (struct SageGalaxies*)malloc(NumGalaxiesPre * sizeof(struct 
 
 ReadSageModel(SageFilesCount, SageFilesPath, SageOutput);
 ReadSageModel(SageFilesCountPre, SageFilesPathPre, SageOutputPre);
+printf("Galaxy info loaded for snapshot:%d\n",snap);
 
-#ifdef DoParallel
-if(ThisTask==0)
-#endif
-if(snap==GP.FirstSnap)
-{
-printf("Sample galaxy for snapshot:%d\n",snap);
-PrintGalaxyInfo(SageOutput,103);
-}
+//#ifdef DoParallel
+//if(ThisTask==0)
+//#endif
+//if(snap==GP.FirstSnap)
+//{
+printf("Sample galaxy for snapshot:%d in processor %d\n",snap,ThisTask);
+PrintGalaxyInfo(SageOutput,10);
+//}
 //printf("Sample galaxy for snapshot:%d\n",snap);
 //PrintGalaxyInfo(SageOutput,10);
 
