@@ -111,9 +111,9 @@ ReadCombineTags(TagFilesCountPre,TagFilesPathPre,AllStarsPre);
 //#endif
 printf("All tags are loaded for snap:%d\n",snap-1);
 
-printf("sample star:%g\n",AllStars[500].Pos[0]);
+//printf("sample star:%g\n",AllStars[500].Pos[0]);
 //PrintStar(673);
-PrintStar(0);
+//PrintStar(0);
 //#ifdef DoParallel
 //}
 //#endif
