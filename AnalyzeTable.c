@@ -140,20 +140,23 @@ for(i=0;i<GP.TotNumStars;i++)
 		//if(list->next->star->Snap==GP.LastSnap) may not be tagged in the last snap
 		//{
 		//this is where they tagged last time not their position at the last snapshot
-		for(j=0;j<3;j++)
-			FinalStellarHalo[i].Pos[j]=list->next->star->Pos[j];
+		//for(j=0;j<3;j++)
+		//	FinalStellarHalo[i].Pos[j]=list->next->star->Pos[j];
 		//FinalStellarHalo[i].Pos[0]=list->next->star->Pos[0];
 		//FinalStellarHalo[i].Pos[1]=list->next->star->Pos[1];
 		//FinalStellarHalo[i].Pos[2]=list->next->star->Pos[2];
 		//}
 		//or their position in the last snapshot
 		for(j=0;j<3;j++)
-		//{
+		{
+			if(P[IdList[i]].Type==1&& P[IdList[i]].Pos[j] !=0 )//just dm particles
+			{
 			FinalStellarHalo[i].Pos[j]=P[IdList[i]].Pos[j];
 			FinalStellarHalo[i].Vel[j]=P[IdList[i]].Vel[j];
+			}
 			//FinalStellarHalo[i].Pos[j]=P[list->next->star->PID].Pos[j];
-                //	FinalStellarHalo[i].Vel[j]=P[list->next->star->PID].Vel[j];
-		//}
+                	//FinalStellarHalo[i].Vel[j]=P[list->next->star->PID].Vel[j];
+		}
 		//
 		list=list->next;
 	}
