@@ -1,4 +1,4 @@
-// © Shahram Talei @ 2019
+// © Shahram @ 2019
 // // Reading stored data in a sage file
 // 
 // 
@@ -36,10 +36,10 @@ unsigned long int id;
 int GalID=-1;
 id=0; //particle id
 fflush(stdout);
-//printf("test time:%g\n",AllStars[0].Time);
+printf("test time:%g\n",AllStars[0].Time);
 Tf=GetAge(FindTime(AllStars));
 Ti=GetAge(FindTime(AllStarsPre));
-//printf("Time for snap:%d is %g & for snap:%d is %g.\nTime difference is: %g\n",snap,Tf,snap-1,Ti,Tf-Ti);
+printf("Time for snap:%d is %g & for snap:%d is %g.\nTime difference is: %g\n",snap,Tf,snap-1,Ti,Tf-Ti);
 int iter,iteration=4;
 //for on all tagged particles
 for(id=0;id<NumOfStars;id++)
@@ -60,7 +60,7 @@ if(ThisTask==0)
 {
 #endif
 printf("finished calculation of stellar properties for all stars!\n");
-//PrintStar(0);
+PrintStar(0);
 #ifdef DoParallel
 }
 #endif
@@ -106,12 +106,10 @@ void CalculateStellarProperties(double ti,double tf, int galaxy, unsigned long i
 // I have to add more sophisticated calculations but let's start with simple method
 // we have to devide this mass between all particles
 // we also have to convert between units!
-//AllStars[id].StellarMass=1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/AllStars[id].Len; //V1
-AllStars[id].StellarMass=SageOutput[galaxy].StellarMass/AllStars[id].Len; //V2
+AllStars[id].StellarMass=1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/AllStars[id].Len;
 AllStars[id].GalNo=galaxy;//SageOutput[galaxy].
 AllStars[id].TreeIndex=SageOutput[galaxy].TreeIndex;
-//AllStars[id].ZZ=SageOutput[galaxy].MetalsStellarMass/AllStars[id].Len;//V1-lower than expected 
-AllStars[id].ZZ=SageOutput[galaxy].MetalsColdGas/SageOutput[galaxy].ColdGas;//V2
+AllStars[id].ZZ=SageOutput[galaxy].MetalsStellarMass/AllStars[id].Len;//lower than expected
 AllStars[id].Mvir=SageOutput[galaxy].Mvir;
 AllStars[id].Rvir=SageOutput[galaxy].Rvir;
 AllStars[id].infallMvir=SageOutput[galaxy].infallMvir;

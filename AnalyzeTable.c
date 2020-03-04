@@ -1,4 +1,4 @@
-// © Shahram Talei @ 2019
+// © Shahram @ 2019
 // // Hash table analysis
 // // 
 // // 
@@ -127,15 +127,12 @@ for(i=0;i<GP.TotNumStars;i++)
 	list=table->table[IdList[i]];
 	//printf("list in extract:%p\n",list->next);
 	FinalStellarHalo[i].StellarMass=0;
-	//FinalStellarHalo[i].StellarMass=list->next->star->StellarMass;
 	FinalStellarHalo[i].ZZ=0;
-	//FinalStellarHalo[i].ZZ=list->next->star->ZZ;
 	while(list->next)
 	{
 		//printf("i:%lld, mass:%g\n",i,list->next->star->StellarMass);
 		FinalStellarHalo[i].StellarMass += list->next->star->StellarMass;
-		FinalStellarHalo[i].ZZ+=list->next->star->ZZ;//V1
-		//FinalStellarHalo[i].ZZ+=(list->next->star->ZZ)*(list->next->star->StellarMass); //V2 first step
+		FinalStellarHalo[i].ZZ+=list->next->star->ZZ;
 		FinalStellarHalo[i].Age=list->next->star->Age; //not += just take the laste age!
 		//if(list->next->star->Snap==GP.LastSnap) may not be tagged in the last snap
 		//{
@@ -160,7 +157,6 @@ for(i=0;i<GP.TotNumStars;i++)
 		//
 		list=list->next;
 	}
-	//FinalStellarHalo[i].ZZ/=FinalStellarHalo[i].StellarMass;
 }
 return;
 }
