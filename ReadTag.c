@@ -87,13 +87,13 @@ printf("Total Number of Tagged Stars:%ld for snap %d\n",NumOfStarsPre,snap-1);
 if((AllStars=(struct tagged_particle *)malloc(NumOfStars*sizeof(struct tagged_particle)))==NULL)
     {
 	printf("Failed to allocate memory for stars!!\n");
-	EndRun(66,CurrentFile);
+	//EndRun(66,CurrentFile);
     }
 
 if((AllStarsPre=(struct tagged_particle *)malloc(NumOfStarsPre*sizeof(struct tagged_particle)))==NULL)
     {
         printf("Failed to allocate memory for stars!!\n");
-        EndRun(72,CurrentFile);
+        //EndRun(72,CurrentFile);
     }
 
 printf("Let's read and combine tags for snap %d",snap);
@@ -111,9 +111,9 @@ ReadCombineTags(TagFilesCountPre,TagFilesPathPre,AllStarsPre);
 //#endif
 printf("All tags are loaded for snap:%d\n",snap-1);
 
-printf("sample star:%g\n",AllStars[500].Pos[0]);
+//printf("sample star:%g\n",AllStars[500].Pos[0]);
 //PrintStar(673);
-PrintStar(0);
+//PrintStar(0);
 //#ifdef DoParallel
 //}
 //#endif

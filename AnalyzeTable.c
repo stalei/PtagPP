@@ -146,7 +146,7 @@ for(i=0;i<GP.TotNumStars;i++)
 		//or their position in the last snapshot
 		for(j=0;j<3;j++)
 		{
-			if(P[IdList[i]].Type==1&& P[IdList[i]].Pos[j] !=0 )//just dm particles
+			if(P[IdList[i]].Type==1)// && P[IdList[i]].Pos[j] !=0 )//just dm particles
 			{
 			FinalStellarHalo[i].Pos[j]=P[IdList[i]].Pos[j];
 			FinalStellarHalo[i].Vel[j]=P[IdList[i]].Vel[j];
