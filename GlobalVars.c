@@ -60,3 +60,6 @@ struct HashTable *table;
 //struct HashTable *EmptyTable(size_t);
 struct LinkedList;
 //struct LinkedList *NewLinkedList();
+struct GalHashTable *gtable;
+struct GalLinkedList;
+

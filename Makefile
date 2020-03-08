@@ -72,7 +72,7 @@ OPTIONS = $(OPTIMIZE) $(OPT)
 FOPTIONS = $(OPTIMIZE) $(FOPT)
 
 EXEC   = PtagPP
-OBJS = GlobalVars.o main.o EndRun.o InitConfig.o ReadSage.o ReadTag.o PaintStars.o WriteTag.o WriteTaggedSnap.o HashTag.o AnalyzeTable.o
+OBJS = GlobalVars.o main.o EndRun.o InitConfig.o ReadSage.o ReadTag.o PaintStars.o WriteTag.o WriteTaggedSnap.o HashTag.o AnalyzeTable.o HashGal.o
 INCL =Makefile
 INCL +=GlobalVars.h proto.h
 CFLAGS = $(OPTIONS) $(GSL_INCL) $(HDF5INCL)

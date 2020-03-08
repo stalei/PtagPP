@@ -1,4 +1,4 @@
-// © Shahram @ 2019
+// © Shahram Talei @ 2019
 /*! \file GlobalVars.h
  *  \brief declares global variables.
  * 
@@ -1350,7 +1350,7 @@ extern int NTask;		/*!< number of processors */
 extern MPI_Comm MPI_CommLocal;
 #endif
 
-// for hashing
+// for hashing tags
 struct HashTable {
     struct LinkedList **table;
     size_t size;
@@ -1363,6 +1363,27 @@ struct LinkedList {
     struct LinkedList *next;
 };
 struct LinkedList *NewLinkedList(void);
+//
+// for hashing galaxies
+struct GalHashTable {
+    struct GalLinkedList **gtable;
+    size_t gsize;
+};//*table;
+struct GalHashTable *GalEmptyTable(size_t);
+
+struct GalLinkedList {
+    long long gkey;
+    struct tagged_particle *star;
+    //long long ID; //particle ID
+    //double BE; //binding energy
+    //long long MostBndID;
+    //long int rank;
+    struct GalLinkedList *next;
+};
+struct GalLinkedList *GalNewLinkedList(void);
+
+
+
 
 #endif // Don't put anything after this!!!
 ///////////////////////////////////////////////////

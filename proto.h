@@ -1,4 +1,4 @@
-// © Shahram @ 2019
+// © Shahram Talei @ 2019
 #ifndef ALLVARS_H
 #include "GlobalVars.h"
 #endif
@@ -73,3 +73,13 @@ int IsTagged(struct LinkedList *);
 long long CountUniqueStars(struct HashTable *,long long *);
 void ExtractFinalHalo(long long *,struct HashTable *,struct tagged_particle *);
 void WriteFinalTag(struct tagged_particle *, long long);
+
+// galaxy tag
+struct GalHashTable *GalEmptyTable(size_t);
+struct GalLinkedList *GalNewLinkedList(void);
+void GalInsertKey(struct GalHashTable *,long long,struct tagged_particle *);
+bool GalContainsElement (struct GalLinkedList *,long long);
+void GalAddElement(struct GalLinkedList *,long long,struct tagged_particle *);
+struct GalLinkedList *GalGetPreviousLink(struct GalLinkedList *,long long); // I removed static
+void GalDeleteTable(struct GalHashTable *);
+void GalDeleteLinkedList(struct GalLinkedList *);
