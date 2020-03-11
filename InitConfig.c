@@ -1,4 +1,4 @@
-// © Shahram @ 2019
+// © Shahram Talei @ 2019
 // Initial setup and configuration
 //
 //
@@ -100,6 +100,11 @@ id[nt++]=INT;
 strcpy(tag[nt],"LastSnap");
 addr[nt]=&GP.LastSnap;
 id[nt++]=INT;
+
+strcpy(tag[nt],"f_mb");
+addr[nt]=&GP.f_mb;
+id[nt++]=REAL;
+
 
 strcpy(tag[nt],"BufferSize");
 addr[nt]=&GP.BufferSize;

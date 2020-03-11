@@ -1,4 +1,4 @@
-// © Shahram @ 2019
+// © Shahram Talei @ 2019
 // // Hash table analysis
 // // 
 // // 

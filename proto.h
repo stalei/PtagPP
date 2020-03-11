@@ -83,3 +83,7 @@ void GalAddElement(struct GalLinkedList *,long long,struct tagged_particle *);
 struct GalLinkedList *GalGetPreviousLink(struct GalLinkedList *,long long); // I removed static
 void GalDeleteTable(struct GalHashTable *);
 void GalDeleteLinkedList(struct GalLinkedList *);
+long int CountStarsInGal(struct GalHashTable *,int);
+double GalBndELimit(struct GalHashTable *, int, struct tagged_particle **, long int, double);
+
+int subfind_compare_binding_energy(const void *, const void *);
