@@ -63,6 +63,8 @@ do{
   }while(GalID<0 && iter<iteration);
 //if(GalID>=0)
         GalInsertKey(gtable,GalID,&AllStars[id]);//insert tags in a galaxy hash table
+	// write tag.galid here so I can use it later
+	AllStars[id].GalIndex=GalID;
         //CalculateStellarProperties(Ti,Tf, GalID,id);
 //else
 //	printf("couldn't find associated galaxy for star %ld up to %gxRvir\n",id,(float)iter/2);
@@ -72,9 +74,11 @@ long int StCount=0;
 double ECutoff;
 for(id=0;id<NumGalaxies;id++)
 	{
+	GalID=AllStars[id].GalIndex;
 	StCount=CountStarsInGal(gtable,id);
 	if(GP.f_mb<1)
 		ECutoff=GalBndELimit(gtable,id,&AllStars,StCount,GP.f_mb);
+		CalculateStellarProperties(Ti,Tf, GalID,id,ECutoff);
 	}
 
 
@@ -125,7 +129,7 @@ while(i<count && galaxy==-1)
 
 return galaxy;
 }
-void CalculateStellarProperties(double ti,double tf, int galaxy, unsigned long int id)
+void CalculateStellarProperties(double ti,double tf, int galaxy, unsigned long int id,double BECut)
 {
 // I have to add more sophisticated calculations but let's start with simple method
 // we have to devide this mass between all particles
