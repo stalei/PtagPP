@@ -64,7 +64,7 @@ do{
 //if(GalID>=0)
         GalInsertKey(gtable,GalID,&AllStars[id]);//insert tags in a galaxy hash table
 	// write tag.galid here so I can use it later
-	AllStars[id].GalIndex=GalID;
+	AllStars[id].GalNo=GalID;
         //CalculateStellarProperties(Ti,Tf, GalID,id);
 //else
 //	printf("couldn't find associated galaxy for star %ld up to %gxRvir\n",id,(float)iter/2);
@@ -74,11 +74,25 @@ long int StCount=0;
 double ECutoff;
 for(id=0;id<NumGalaxies;id++)
 	{
-	GalID=AllStars[id].GalIndex;
+	GalID=AllStars[id].GalNo;
 	StCount=CountStarsInGal(gtable,id);
-	if(GP.f_mb<1)
+	if(GP.f_mb<10)
+		{
+		AllStars[id].Len=(StCount*10.0)*(GP.f_mb/100);
 		ECutoff=GalBndELimit(gtable,id,&AllStars,StCount,GP.f_mb);
-		CalculateStellarProperties(Ti,Tf, GalID,id,ECutoff);
+		}
+	else if(GP.f_mb==10)
+		{
+		AllStars[id].Len=StCount;
+		ECutoff=0;
+		}
+	else
+		{
+		printf("Invalid value for f_mb, we set default values (10 percent)\n");
+                AllStars[id].Len=StCount;
+                ECutoff=0;
+		}
+	CalculateStellarProperties(Ti,Tf, GalID,id,ECutoff);
 	}
 
 
@@ -134,8 +148,10 @@ void CalculateStellarProperties(double ti,double tf, int galaxy, unsigned long i
 // I have to add more sophisticated calculations but let's start with simple method
 // we have to devide this mass between all particles
 // we also have to convert between units!
+if(AllStars[id].BindingEnergy < BECut)
+{
 AllStars[id].StellarMass=1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/AllStars[id].Len;
-AllStars[id].GalNo=galaxy;//SageOutput[galaxy].
+//AllStars[id].GalNo=galaxy;//SageOutput[galaxy].
 AllStars[id].TreeIndex=SageOutput[galaxy].TreeIndex;
 AllStars[id].ZZ=SageOutput[galaxy].MetalsStellarMass/AllStars[id].Len;//lower than expected
 AllStars[id].Mvir=SageOutput[galaxy].Mvir;
@@ -143,6 +159,7 @@ AllStars[id].Rvir=SageOutput[galaxy].Rvir;
 AllStars[id].infallMvir=SageOutput[galaxy].infallMvir;
 AllStars[id].Age=GetAge(AllStars[id].Time);//this makes sense
 AllStars[id].LastMajorMerger=SageOutput[galaxy].LastMajorMerger;
+}
 return;
 }
 double FindTime(struct tagged_particle *Stars)
