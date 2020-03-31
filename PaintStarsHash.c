@@ -40,6 +40,18 @@ printf("test time:%g\n",AllStars[0].Time);
 Tf=GetAge(FindTime(AllStars));
 Ti=GetAge(FindTime(AllStarsPre));
 printf("Time for snap:%d is %g & for snap:%d is %g.\nTime difference is: %g\n",snap,Tf,snap-1,Ti,Tf-Ti);
+//
+struct GalHashTable *gtable=GalEmptyTable(NumGalaxies);
+if(gtable==NULL)
+        {
+        printf("can't allocate memory for hashtable!\n");
+        EndRun(48,CurrentFile);
+        }
+
+//
+
+
+
 int iter,iteration=4;
 //for on all tagged particles
 for(id=0;id<NumOfStars;id++)
@@ -49,38 +61,39 @@ do{
 	GalID= LookupGalaxy(snap,id, SageOutput,NumGalaxies,2/iter);
         iter++;
   }while(GalID<0 && iter<iteration);
-if(GalID>=0)
+//if(GalID>=0)
+        //GalInsertKey(gtable,GalID,&AllStars[id]);//insert tags in a galaxy hash table
+	// write tag.galid here so I can use it later
 	AllStars[id].GalNo=GalID;
-	if(AllStars[id].Len>MaxPartNum)
-		MaxPartNum=AllStrs[id].Len;
-        //CalculateStellarProperties(Ti,Tf, GalID,id,0);
-else
-	printf("couldn't find associated galaxy for star %ld up to %gxRvir\n",id,(float)iter/2);
+        //CalculateStellarProperties(Ti,Tf, GalID,id);
+//else
+//	printf("couldn't find associated galaxy for star %ld up to %gxRvir\n",id,(float)iter/2);
 }
-
-//Find energy limit
-for(GalID=0;GalID<NumGalaxies;GalID++)
-{
-	BindingEnergy =(double *)malloc(AllStars.Len
-	BELimit=malloc NumGalaxies;
-	for(id=0;id<NumOfStars;id++)
-	{	if(AllStars[id].GalNo==GalID)
-			{
-			BindingEnergy[i]=AllStars[id].BindingEnergy;
-			i++;
-			}
+// now tags are in galaxy hash table, we can start painting them galaxy by galaxy
+long int StCount=0;
+double ECutoff;
+for(id=0;id<NumGalaxies;id++)
+	{
+	GalID=AllStars[id].GalNo;
+	StCount=AllStars[id].Len;//CountStarsInGal(gtable,id);
+	if(GP.f_mb<10)
+		{
+		AllStars[id].Len=(StCount*10.0)*(GP.f_mb/100);
+		ECutoff=GalBndELimit(gtable,id,&AllStars,StCount,GP.f_mb);
+		}
+	else if(GP.f_mb==10)
+		{
+		//AllStars[id].Len=StCount;
+		ECutoff=0;
+		}
+	else
+		{
+		printf("Invalid value for f_mb, we set default values (10 percent)\n");
+                //AllStars[id].Len=StCount;
+                ECutoff=0;
+		}
+	CalculateStellarProperties(Ti,Tf, GalID,id,ECutoff);
 	}
-	qsort(bindingEnergy);
-	NumLimit=;
-}
-for(id; NumOfStars)
-{
-GalID=AllStars[id].GalNo;
-BECutOff=BELimit[GalID];
-Calculate
-}
-
-
 
 
 #ifdef DoParallel
@@ -130,13 +143,15 @@ while(i<count && galaxy==-1)
 
 return galaxy;
 }
-void CalculateStellarProperties(double ti,double tf, int galaxy, unsigned long int id, double BE)
+void CalculateStellarProperties(double ti,double tf, int galaxy, unsigned long int id,double BECut)
 {
 // I have to add more sophisticated calculations but let's start with simple method
 // we have to devide this mass between all particles
 // we also have to convert between units!
+//if(AllStars[id].BindingEnergy < BECut)
+//{
 AllStars[id].StellarMass=1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/AllStars[id].Len;
-AllStars[id].GalNo=galaxy;//SageOutput[galaxy].
+//AllStars[id].GalNo=galaxy;//SageOutput[galaxy].
 AllStars[id].TreeIndex=SageOutput[galaxy].TreeIndex;
 AllStars[id].ZZ=SageOutput[galaxy].MetalsStellarMass/AllStars[id].Len;//lower than expected
 AllStars[id].Mvir=SageOutput[galaxy].Mvir;
@@ -144,6 +159,7 @@ AllStars[id].Rvir=SageOutput[galaxy].Rvir;
 AllStars[id].infallMvir=SageOutput[galaxy].infallMvir;
 AllStars[id].Age=GetAge(AllStars[id].Time);//this makes sense
 AllStars[id].LastMajorMerger=SageOutput[galaxy].LastMajorMerger;
+//}
 return;
 }
 double FindTime(struct tagged_particle *Stars)
@@ -177,4 +193,55 @@ for(i=0;i<n;i++)
 //t/=3.086e+19; //Mpc ->km
 //t/=(3600*24*365.26); //s ->year
 return ageGyr;
+}
+long int CountStarsInGal(struct GalHashTable *gtable,int id)
+{
+long int c=0;
+struct GalLinkedList *glist;
+glist=gtable->gtable[id];
+while(glist->next)
+{
+        //printf("snap in IsTagged:%d\n",list->next->star->Snap);
+        c++;
+        glist=glist->next;
+}
+
+return c;
+}
+
+int subfind_compare_binding_energy(const void *a, const void *b)
+{
+  if(*((double *) a) > *((double *) b))
+    return -1;
+
+  if(*((double *) a) < *((double *) b))
+    return +1;
+
+  return 0;
+}
+
+
+double GalBndELimit(struct GalHashTable *gtable, int id, struct tagged_particle **Stars, long int count, double f_mb)
+{
+double BndELim=0;
+long int c=0,NumLimit; // we tag 10 percent in sim but now we can use different fraction
+NumLimit=(count*10.0)*(f_mb/100); //we tag 10 percent in CoSANG by default
+// so there is a new limit for total number of tags for each galaxy
+struct GalLinkedList *glist;
+//sort binding energy & find energy cut-off
+double *BndEnergy;
+BndEnergy = (double *) malloc(count * sizeof(double));
+glist=gtable->gtable[id];
+while(glist->next)
+{
+        //printf("snap in IsTagged:%d\n",list->next->star->Snap);
+	BndEnergy[c]=glist->next->star->BindingEnergy;
+	c++;
+        //
+        glist=glist->next;
+}
+qsort(BndEnergy, count, sizeof(double), subfind_compare_binding_energy);
+//now we can set the energy limit
+BndELim=BndEnergy[NumLimit];
+return BndELim;
 }
