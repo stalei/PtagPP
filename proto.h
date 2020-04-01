@@ -28,7 +28,7 @@ void SavePositions(void);
 
 void PaintStars(int);
 int LookupGalaxy(int, unsigned int, struct SageGalaxies *,int,float);
-void CalculateStellarProperties(double,double,int,unsigned long int,double);
+void CalculateStellarProperties(double,double,int,unsigned long int,double,long int);
 //double FindTime(int);
 double FindTime(struct tagged_particle *);
 void WriteTag(int);
