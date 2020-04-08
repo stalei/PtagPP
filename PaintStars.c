@@ -150,18 +150,20 @@ void CalculateStellarProperties(double ti,double tf, int galaxy, unsigned long i
 // I have to add more sophisticated calculations but let's start with simple method
 // we have to devide this mass between all particles
 // we also have to convert between units!
-//if(AllStars[id].BindingEnergy < BECut)
-//{
-AllStars[id].StellarMass=1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/AllStars[id].Len;
+long int Len;
+Len=count;//AllStars[id].Len;
+if(AllStars[id].BindingEnergy < BECut)
+{
+AllStars[id].StellarMass=SageOutput[galaxy].StellarMass/Len; //1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/Len;
 //AllStars[id].GalNo=galaxy;//SageOutput[galaxy].
 AllStars[id].TreeIndex=SageOutput[galaxy].TreeIndex;
-AllStars[id].ZZ=SageOutput[galaxy].MetalsStellarMass/AllStars[id].Len;//lower than expected
+AllStars[id].ZZ=SageOutput[galaxy].MetalsStellarMass/SageOutput[galaxy].StellarMass;//Len;//lower than expected
 AllStars[id].Mvir=SageOutput[galaxy].Mvir;
 AllStars[id].Rvir=SageOutput[galaxy].Rvir;
 AllStars[id].infallMvir=SageOutput[galaxy].infallMvir;
 AllStars[id].Age=GetAge(AllStars[id].Time);//this makes sense
 AllStars[id].LastMajorMerger=SageOutput[galaxy].LastMajorMerger;
-//}
+}
 return;
 }
 double FindTime(struct tagged_particle *Stars)
