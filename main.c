@@ -77,16 +77,16 @@ for(TargetSnap=si; TargetSnap<=sf;TargetSnap+=step)
 	//#endif
 
 	ReadTag(TargetSnap);
-	//#ifdef DoParallel
-	//fflush(stdout);
-	//MPI_Barrier(MPI_COMM_WORLD);
-	//#endif
+	#ifdef DoParallel
+	fflush(stdout);
+	MPI_Barrier(MPI_COMM_WORLD);
+	#endif
 
 	PaintStars(TargetSnap);
-  //      #ifdef DoParallel
-        //fflush(stdout);
-        //MPI_Barrier(MPI_COMM_WORLD);
-    //    #endif
+        #ifdef DoParallel
+        fflush(stdout);
+        MPI_Barrier(MPI_COMM_WORLD);
+        #endif
 	WriteTag(TargetSnap);
         //#ifdef DoParallel
         //fflush(stdout);
@@ -104,13 +104,14 @@ fflush(stdout);
 //#ifdef DoParallel
 //MPI_Barrier(MPI_COMM_WORLD);
 //#endif
+//
 HashTags(GP.LastSnap);
 
 
 //#ifdef DoParallel
 //MPI_Barrier(MPI_COMM_WORLD);
 //#endif
-//WriteTaggedSnap(GP.LastSnap);
+WriteTaggedSnap(GP.LastSnap);
 
 //free(P);
 //free(StellarHaloAllSnaps);

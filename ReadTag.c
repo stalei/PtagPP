@@ -57,7 +57,7 @@ TagFilesPathPre = (struct Path_Names*)malloc(TagFilesCountPre * sizeof(struct Pa
 
 ReadTagFNames(snap,TagFilesPath);// note that 0th file is the last!
 ReadTagFNames(snap-1,TagFilesPathPre);// it is the same as previous, but anyway!
-printf("Tag file names are read for snap %d",snap);
+//printf("Tag file names are read for snap %d",snap);
 fflush(stdout);
 //printf("sample tag file:%s\n",TagFilesPath[0].paths);
 NumOfStars=0;
@@ -109,7 +109,7 @@ ReadCombineTags(TagFilesCountPre,TagFilesPathPre,AllStarsPre);
 //#ifdef DoParallel
 //if(ThisTask==0){
 //#endif
-printf("All tags are loaded for snap:%d\n",snap-1);
+//printf("All tags are loaded for snap:%d\n",snap-1);
 
 //printf("sample star:%g\n",AllStars[500].Pos[0]);
 //PrintStar(673);
@@ -136,7 +136,7 @@ int c=0;
 //strcpy(dir,GP.TagDir);
 sprintf(dir,"%s/tag_%03d",GP.TagDir,snap);
 
-printf("Counting files in %s\n",dir);
+//printf("Counting files in %s\n",dir);
 struct dirent *dp;
 DIR *fd;
 
@@ -156,7 +156,7 @@ return c;
 
 void ReadTagFNames(int snap, struct Path_Names *TagFile)
 {
-printf("Loading tag file-name(s) for snap %d:\n",snap);
+//printf("Loading tag file-name(s) for snap %d:\n",snap);
 char dir[500];
 int c=0;
 //strcpy(dir,GP.TagDir);
@@ -179,7 +179,7 @@ struct dirent *dp;
 //#ifdef DoParallel
 //if(ThisTask==0)
 //#endif
-printf("Processor %d Finished reading tag files-name(s)\n",ThisTask);
+//printf("Processor %d Finished reading tag files-name(s)\n",ThisTask);
 return;
 }
 
@@ -224,7 +224,7 @@ return;
 long int CountStars(int count, struct Path_Names *FilePath)
 {
 long int c=0;
-printf("Counting number of tagged particles.\n...\n");
+//printf("Counting number of tagged particles.\n...\n");
 //long int c=0;
 //int i;
 hid_t       file=0, dataset,TagDatatype;         /* handles */
@@ -291,7 +291,7 @@ size_t      size;                  /*
 	//   (unsigned long)(dims_out[0]), (unsigned long)(dims_out[1]),size);
     rows = dims_out[0];
     cols = dims_out[1];
-    printf("Found %lu star(s) in:<%s> (%d x %lu, size:%d) \n",rows,TagFile, rank,cols,(int)size);
+    //printf("Found %lu star(s) in:<%s> (%d x %lu, size:%d) \n",rows,TagFile, rank,cols,(int)size);
     TagCols=cols;
     TagSize=size;
     if(rank>0)
@@ -306,7 +306,7 @@ size_t      size;                  /*
     //printf(".");
 } // end of for i
 
-printf("\nCounting is done!\n");
+//printf("\nCounting is done!\n");
 
 return c;
 }
@@ -314,7 +314,7 @@ return c;
 void ReadCombineTags(int count,struct Path_Names *TagPath,struct tagged_particle *Stars)
 {
 
-printf("Processor %d Starting reading and combining tags!\n...\n",ThisTask);
+//printf("Processor %d Starting reading and combining tags!\n...\n",ThisTask);
 int c;
 hid_t       file, dataset,TagDatatype;         /* handles */
 hid_t        dataspace;
