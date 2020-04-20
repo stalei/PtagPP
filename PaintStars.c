@@ -182,7 +182,7 @@ void CalculateStellarProperties(double ti,double tf, int galaxy, unsigned long i
 // we also have to convert between units!
 long int Len;
 Len=count;//AllStars[id].Len;
-if(AllStars[id].BindingEnergy < BECut)
+if(AllStars[id].BindingEnergy <= BECut)
 {
 AllStars[id].StellarMass=SageOutput[galaxy].StellarMass/Len; //1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/Len;
 //AllStars[id].GalNo=galaxy;//SageOutput[galaxy].
@@ -194,6 +194,13 @@ AllStars[id].infallMvir=SageOutput[galaxy].infallMvir;
 AllStars[id].Age=GetAge(AllStars[id].Time);//this makes sense
 AllStars[id].LastMajorMerger=SageOutput[galaxy].LastMajorMerger;
 }
+else // if their energy is above the limit, unbind them
+{
+AllStars[id].BindingEnergy=0;
+AllStars[id].StellarMass=0;
+AllStars[id].ZZ=0;
+}
+
 return;
 }
 double FindTime(struct tagged_particle *Stars)

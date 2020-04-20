@@ -144,6 +144,7 @@ for(i=0;i<GP.TotNumStars;i++)
 		//FinalStellarHalo[i].Pos[1]=list->next->star->Pos[1];
 		//FinalStellarHalo[i].Pos[2]=list->next->star->Pos[2];
 		//}
+		FinalStellarHalo[i].BindingEnergy=list->next->star->BindingEnergy;
 		//or their position in the last snapshot
 		for(j=0;j<3;j++)
 		{
