@@ -46,6 +46,7 @@ struct GalHashTable *gtable=GalEmptyTable(NumGalaxies);
 if(gtable==NULL)
         {
         printf("can't allocate memory for hashtable!\n");
+	fflush(stdout);
         EndRun(48,CurrentFile);
         }
 
@@ -59,6 +60,7 @@ long int *StCount;
 StCount=(long int *) malloc(NumGalaxies * sizeof(long int));
 double *ECutoff;
 ECutoff= (double *) malloc(NumGalaxies * sizeof(double));
+printf("got to ECutoff\n");
 for(GalID=0;GalID<NumGalaxies;GalID++)
 {
 	ECutoff[GalID]=0;
@@ -102,13 +104,17 @@ for(GalID=0;GalID<NumGalaxies;GalID++)
 	else if(GP.f_mb==10)
 		{
 		//AllStars[id].Len=StCount;
-		ECutoff=0;
+		printf("Before ECutoff\n");
+                fflush(stdout);
+		ECutoff[GalID]=0;
+		//printf("After ECutoff\n");
+                fflush(stdout);
 		}
 	else
 		{
 		printf("Invalid value for f_mb, we set default values (10 percent)\n");
                 //AllStars[id].Len=StCount;
-                ECutoff=0;
+                ECutoff[GalID]=0;
 		}
 	//CalculateStellarProperties(Ti,Tf, GalID,id,ECutoff,StCount);
 	}
@@ -117,14 +123,16 @@ for(GalID=0;GalID<NumGalaxies;GalID++)
 for(id=0;id<NumOfStars;id++)
         {
 	GalID=AllStars[id].GalNo;
-	if(GP.f_mb==10)
-		StCount[GalID]=AllStars[id].Len;
-	else
+	printf("%ld after GalID\n",id);
+	if(GP.f_mb<10)
+		//StCount[GalID]=AllStars[id].Len;
+	//else
 		StCount[GalID]=(StCount[GalID]*10.0)*(GP.f_mb/100);
+	printf("%ld after StCount\n",id);
         //ECutoff[GalID]=GalBndELimit(gtable,GalID,StCount,GP.f_mb);
+        //if(StCount[GalID]>0) 
         CalculateStellarProperties(Ti,Tf, GalID,id,ECutoff[GalID],StCount[GalID]);
         }
-
 
 /////////////////////////
 
@@ -182,8 +190,10 @@ void CalculateStellarProperties(double ti,double tf, int galaxy, unsigned long i
 // we also have to convert between units!
 long int Len;
 Len=count;//AllStars[id].Len;
-if(AllStars[id].BindingEnergy <= BECut)
+if(AllStars[id].BindingEnergy <= BECut && Len>0)
 {
+printf("I got inside painting function.\n");
+fflush(stdout);
 AllStars[id].StellarMass=SageOutput[galaxy].StellarMass/Len; //1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/Len;
 //AllStars[id].GalNo=galaxy;//SageOutput[galaxy].
 AllStars[id].TreeIndex=SageOutput[galaxy].TreeIndex;
