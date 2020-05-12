@@ -57,9 +57,14 @@ printf("I found %lld unique stars in hash table!\n",GP.TotNumStars);
 
 //let's extract final stellar halo information
 struct tagged_particle *FinalStellarHalo;
+struct tagged_particle *FirstTagged;
 
 if((FinalStellarHalo=(struct tagged_particle *)malloc(GP.TotNumStars*sizeof(struct tagged_particle)))==NULL)
 	printf("couldn't allocate memory for final stellar halo\n");
+
+if((FirstTagged=(struct tagged_particle *)malloc(GP.TotNumStars*sizeof(struct tagged_particle)))==NULL)
+        printf("couldn't allocate memory for final stellar halo\n");
+
 
 char SnapFile[500];
 sprintf(SnapFile,"%s/snap_%03d",GP.SnapDir,snap);
@@ -68,8 +73,10 @@ ReadSnap(SnapFile);
 
 ExtractFinalHalo(IdList,table,FinalStellarHalo);
 
+ExtractFirstTagged(IdList,table,FirstTagged);
 
 WriteFinalTag(FinalStellarHalo,GP.TotNumStars);
+WriteFirstTagged(FirstTagged,GP.TotNumStars);
 
 return;
 }
@@ -128,10 +135,12 @@ for(i=0;i<GP.TotNumStars;i++)
 	//printf("list in extract:%p\n",list->next);
 	FinalStellarHalo[i].StellarMass=0;
 	FinalStellarHalo[i].ZZ=0;
+	FinalStellarHalo[i].AA=0;
 	while(list->next)
 	{
-		//printf("i:%lld, mass:%g\n",i,list->next->star->StellarMass);
+		printf("i:%lld, mass:%g\n",i,list->next->star->StellarMass);
 		FinalStellarHalo[i].StellarMass += list->next->star->StellarMass;
+		//FinalStellarHalo[i].StellarMass = list->next->star->StellarMass;
 		//FinalStellarHalo[i].ZZ+=list->next->star->ZZ;
 		FinalStellarHalo[i].ZZ+=(list->next->star->ZZ)*(list->next->star->StellarMass);
 		FinalStellarHalo[i].Age=list->next->star->Age; //not += just take the laste age!
@@ -144,7 +153,15 @@ for(i=0;i<GP.TotNumStars;i++)
 		//FinalStellarHalo[i].Pos[1]=list->next->star->Pos[1];
 		//FinalStellarHalo[i].Pos[2]=list->next->star->Pos[2];
 		//}
+		FinalStellarHalo[i].PID=list->next->star->PID;
 		FinalStellarHalo[i].BindingEnergy=list->next->star->BindingEnergy;
+                FinalStellarHalo[i].TreeIndex=list->next->star->TreeIndex;
+		FinalStellarHalo[i].HaloIndex=list->next->star->HaloIndex;
+		FinalStellarHalo[i].AA+=list->next->star->AA;
+		FinalStellarHalo[i].Mvir=list->next->star->Mvir;
+		FinalStellarHalo[i].Rvir=list->next->star->Rvir;
+		FinalStellarHalo[i].infallMvir=list->next->star->infallMvir;
+		FinalStellarHalo[i].LastMajorMerger=list->next->star->LastMajorMerger;
 		//or their position in the last snapshot
 		for(j=0;j<3;j++)
 		{
@@ -164,3 +181,68 @@ for(i=0;i<GP.TotNumStars;i++)
 }
 return;
 }
+
+void ExtractFirstTagged(long long *IdList,struct HashTable *table,struct tagged_particle *FinalStellarHalo)
+{
+long long i;
+int j,minSnap;
+struct LinkedList *list;
+for(i=0;i<GP.TotNumStars;i++)
+{
+        //printf("id list:%lld\n",IdList[i]);
+        list=table->table[IdList[i]];
+        //printf("list in extract:%p\n",list->next);
+        FinalStellarHalo[i].StellarMass=0;
+        FinalStellarHalo[i].ZZ=0;
+        FinalStellarHalo[i].AA=0;
+	minSnap=GP.LastSnap;//list->next->star->Snap;
+        while(list->next)
+        {
+		if((list->next->star->Snap) < minSnap)
+		{
+                printf("i:%lld, mass:%g\n",i,list->next->star->StellarMass);
+                FinalStellarHalo[i].StellarMass += list->next->star->StellarMass;
+                //FinalStellarHalo[i].StellarMass = list->next->star->StellarMass;
+                //FinalStellarHalo[i].ZZ+=list->next->star->ZZ;
+                FinalStellarHalo[i].ZZ+=(list->next->star->ZZ)*(list->next->star->StellarMass);
+                FinalStellarHalo[i].Age=list->next->star->Age; //not += just take the laste age!
+                //if(list->next->star->Snap==GP.LastSnap) may not be tagged in the last snap
+                //{
+                //this is where they tagged last time not their position at the last snapshot
+                //for(j=0;j<3;j++)
+                //      FinalStellarHalo[i].Pos[j]=list->next->star->Pos[j];
+                //FinalStellarHalo[i].Pos[0]=list->next->star->Pos[0];
+                //FinalStellarHalo[i].Pos[1]=list->next->star->Pos[1];
+ //FinalStellarHalo[i].Pos[2]=list->next->star->Pos[2];
+                //}
+                FinalStellarHalo[i].PID=list->next->star->PID;
+                FinalStellarHalo[i].BindingEnergy=list->next->star->BindingEnergy;
+                FinalStellarHalo[i].TreeIndex=list->next->star->TreeIndex;
+                FinalStellarHalo[i].HaloIndex=list->next->star->HaloIndex;
+                FinalStellarHalo[i].AA+=list->next->star->AA;
+                FinalStellarHalo[i].Mvir=list->next->star->Mvir;
+                FinalStellarHalo[i].Rvir=list->next->star->Rvir;
+                FinalStellarHalo[i].infallMvir=list->next->star->infallMvir;
+                FinalStellarHalo[i].LastMajorMerger=list->next->star->LastMajorMerger;
+                //or their position in the last snapshot
+                for(j=0;j<3;j++)
+                {
+                        if(P[IdList[i]].Type==1)// && P[IdList[i]].Pos[j] !=0 )//just dm particles
+                        {
+                        FinalStellarHalo[i].Pos[j]=P[IdList[i]].Pos[j];
+                        FinalStellarHalo[i].Vel[j]=P[IdList[i]].Vel[j];
+                        }
+                        //FinalStellarHalo[i].Pos[j]=P[list->next->star->PID].Pos[j];
+                        //FinalStellarHalo[i].Vel[j]=P[list->next->star->PID].Vel[j];
+                }
+                //
+                minSnap=list->next->star->Snap;
+		}//if
+                list=list->next;
+        }
+        FinalStellarHalo[i].ZZ/=FinalStellarHalo[i].StellarMass;
+
+}
+return;
+}
+

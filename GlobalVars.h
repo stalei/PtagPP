@@ -233,6 +233,7 @@ extern struct SageGalaxies
   float infallVvir;
   float infallVmax;
   float r_heat;
+  double Stars;
 
 }*SageOutput,*SageOutputPre;
 

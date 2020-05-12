@@ -72,7 +72,9 @@ bool IsStar(struct LinkedList *);
 int IsTagged(struct LinkedList *);
 long long CountUniqueStars(struct HashTable *,long long *);
 void ExtractFinalHalo(long long *,struct HashTable *,struct tagged_particle *);
+void ExtractFirstTagged(long long *,struct HashTable *,struct tagged_particle *);
 void WriteFinalTag(struct tagged_particle *, long long);
+void WriteFirstTagged(struct tagged_particle *, long long);
 
 // galaxy tag
 struct GalHashTable *GalEmptyTable(size_t);

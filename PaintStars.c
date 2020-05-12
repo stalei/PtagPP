@@ -94,21 +94,21 @@ for(GalID=0;GalID<NumGalaxies;GalID++)
 	if(GP.f_mb<10)
 		{
 		//StCount=(StCount*10.0)*(GP.f_mb/100);
-		printf("Before ECutoff\n");
-		fflush(stdout);
+		//printf("Before ECutoff\n");
+		//fflush(stdout);
 		ECutoff[GalID]=GalBndELimit(gtable,GalID,StCount[GalID],GP.f_mb);
-                printf("after ECutoff\n");
-                fflush(stdout);
+                //printf("after ECutoff\n");
+                //fflush(stdout);
 		//StCount=(StCount*10.0)*(GP.f_mb/100);
 		}
 	else if(GP.f_mb==10)
 		{
 		//AllStars[id].Len=StCount;
-		printf("Before ECutoff\n");
-                fflush(stdout);
+		//printf("Before ECutoff\n");
+                //fflush(stdout);
 		ECutoff[GalID]=0;
 		//printf("After ECutoff\n");
-                fflush(stdout);
+                //fflush(stdout);
 		}
 	else
 		{
@@ -123,12 +123,12 @@ for(GalID=0;GalID<NumGalaxies;GalID++)
 for(id=0;id<NumOfStars;id++)
         {
 	GalID=AllStars[id].GalNo;
-	printf("%ld after GalID\n",id);
+	//printf("%ld after GalID\n",id);
 	if(GP.f_mb<10)
 		//StCount[GalID]=AllStars[id].Len;
 	//else
 		StCount[GalID]=(StCount[GalID]*10.0)*(GP.f_mb/100);
-	printf("%ld after StCount\n",id);
+	//printf("%ld after StCount\n",id);
         //ECutoff[GalID]=GalBndELimit(gtable,GalID,StCount,GP.f_mb);
         //if(StCount[GalID]>0) 
         CalculateStellarProperties(Ti,Tf, GalID,id,ECutoff[GalID],StCount[GalID]);
@@ -190,11 +190,17 @@ void CalculateStellarProperties(double ti,double tf, int galaxy, unsigned long i
 // we also have to convert between units!
 long int Len;
 Len=count;//AllStars[id].Len;
+//if(G.f_mb<10)
 if(AllStars[id].BindingEnergy <= BECut && Len>0)
 {
-printf("I got inside painting function.\n");
-fflush(stdout);
-AllStars[id].StellarMass=SageOutput[galaxy].StellarMass/Len; //1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/Len;
+printf("SMass:%g,SMassPre:%g\n",SageOutput[galaxy].StellarMass, SageOutputPre[galaxy].StellarMass);
+//if(Len>0)
+//	{
+//printf("I got inside painting function.\n");
+//fflush(stdout);
+//AllStars[id].StellarMass=1.0e10*SageOutput[galaxy].StellarMass/Len;
+//AllStars[id].StellarMass=1.0e10*((SageOutput[galaxy].StellarMass-SageOutputPre[galaxy].StellarMass)/Len); //1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/Len;
+AllStars[id].StellarMass=1.0e10*((SageOutput[galaxy].Stars)/Len);
 //AllStars[id].GalNo=galaxy;//SageOutput[galaxy].
 AllStars[id].TreeIndex=SageOutput[galaxy].TreeIndex;
 AllStars[id].ZZ=SageOutput[galaxy].MetalsStellarMass/SageOutput[galaxy].StellarMass;//Len;//lower than expected
@@ -204,6 +210,25 @@ AllStars[id].infallMvir=SageOutput[galaxy].infallMvir;
 AllStars[id].Age=GetAge(AllStars[id].Time);//this makes sense
 AllStars[id].LastMajorMerger=SageOutput[galaxy].LastMajorMerger;
 }
+/*else if(GP.f_mb==10 && Len>0)
+//printf("BE:%g,BECut:%g\n",AllStars[id].BindingEnergy, BECut);
+//if(Len>0)
+        {
+//printf("I got inside painting function.\n");
+//fflush(stdout);
+//AllStars[id].StellarMass=1.0e10*SageOutput[galaxy].StellarMass/Len;
+AllStars[id].StellarMass=1.0e10*((SageOutput[galaxy].StellarMass-SageOutputPre[galaxy].StellarMass)/Len); //1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/Len;
+//AllStars[id].GalNo=galaxy;//SageOutput[galaxy].
+AllStars[id].TreeIndex=SageOutput[galaxy].TreeIndex;
+AllStars[id].ZZ=SageOutput[galaxy].MetalsStellarMass/SageOutput[galaxy].StellarMass;//Len;//lower than expected
+AllStars[id].Mvir=SageOutput[galaxy].Mvir;
+AllStars[id].Rvir=SageOutput[galaxy].Rvir;
+AllStars[id].infallMvir=SageOutput[galaxy].infallMvir;
+AllStars[id].Age=GetAge(AllStars[id].Time);//this makes sense
+AllStars[id].LastMajorMerger=SageOutput[galaxy].LastMajorMerger;
+}
+*/
+
 else // if their energy is above the limit, unbind them
 {
 AllStars[id].BindingEnergy=0;
