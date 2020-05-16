@@ -153,10 +153,16 @@ for(i=0;i<GP.TotNumStars;i++)
 		//FinalStellarHalo[i].Pos[1]=list->next->star->Pos[1];
 		//FinalStellarHalo[i].Pos[2]=list->next->star->Pos[2];
 		//}
+		//AllStars[id].HaloIndex=SageOutput[galaxy].HaloIndex;
+		//AllStars[id].SubhaloIndex=SageOutput[galaxy].FOFHaloIndex;
+		//AllStars[id].GalIndex=SageOutput[galaxy].CentralGal;
+		//
 		FinalStellarHalo[i].PID=list->next->star->PID;
 		FinalStellarHalo[i].BindingEnergy=list->next->star->BindingEnergy;
                 FinalStellarHalo[i].TreeIndex=list->next->star->TreeIndex;
 		FinalStellarHalo[i].HaloIndex=list->next->star->HaloIndex;
+		FinalStellarHalo[i].SubhaloIndex=list->next->star->SubhaloIndex;
+		FinalStellarHalo[i].GalIndex=list->next->star->GalIndex;
 		FinalStellarHalo[i].AA+=list->next->star->AA;
 		FinalStellarHalo[i].Mvir=list->next->star->Mvir;
 		FinalStellarHalo[i].Rvir=list->next->star->Rvir;
@@ -219,6 +225,8 @@ for(i=0;i<GP.TotNumStars;i++)
                 FinalStellarHalo[i].BindingEnergy=list->next->star->BindingEnergy;
                 FinalStellarHalo[i].TreeIndex=list->next->star->TreeIndex;
                 FinalStellarHalo[i].HaloIndex=list->next->star->HaloIndex;
+		FinalStellarHalo[i].SubhaloIndex=list->next->star->SubhaloIndex;
+                FinalStellarHalo[i].GalIndex=list->next->star->GalIndex;
                 FinalStellarHalo[i].AA+=list->next->star->AA;
                 FinalStellarHalo[i].Mvir=list->next->star->Mvir;
                 FinalStellarHalo[i].Rvir=list->next->star->Rvir;

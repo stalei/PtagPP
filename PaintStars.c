@@ -209,6 +209,9 @@ AllStars[id].Rvir=SageOutput[galaxy].Rvir;
 AllStars[id].infallMvir=SageOutput[galaxy].infallMvir;
 AllStars[id].Age=GetAge(AllStars[id].Time);//this makes sense
 AllStars[id].LastMajorMerger=SageOutput[galaxy].LastMajorMerger;
+AllStars[id].HaloIndex=SageOutput[galaxy].HaloIndex;
+AllStars[id].SubhaloIndex=SageOutput[galaxy].FOFHaloIndex;
+AllStars[id].GalIndex=SageOutput[galaxy].CentralGal;
 }
 /*else if(GP.f_mb==10 && Len>0)
 //printf("BE:%g,BECut:%g\n",AllStars[id].BindingEnergy, BECut);
