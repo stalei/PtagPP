@@ -146,6 +146,7 @@ char SageDir[500];
 char TagDir[500];
 char SnapDir[500];
 char OutputDir[500];
+char SubhaloFile[500];
 double f_mb;
 int SubhaloSelectionOn;
 int BufferSize;

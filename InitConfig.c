@@ -93,6 +93,10 @@ strcpy(tag[nt],"OutputDir");
 addr[nt]=GP.OutputDir;
 id[nt++]=STRING;
 
+strcpy(tag[nt],"SubhaloFile");
+addr[nt]=GP.SubhaloFile;
+id[nt++]=STRING;
+
 strcpy(tag[nt],"FirstSnap");
 addr[nt]=&GP.FirstSnap;
 id[nt++]=INT;
