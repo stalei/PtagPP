@@ -105,6 +105,10 @@ strcpy(tag[nt],"f_mb");
 addr[nt]=&GP.f_mb;
 id[nt++]=REAL;
 
+strcpy(tag[nt],"SubhaloSelectionOn");
+addr[nt]=&GP.SubhaloSelectionOn;
+id[nt++]=INT;
+
 
 strcpy(tag[nt],"BufferSize");
 addr[nt]=&GP.BufferSize;

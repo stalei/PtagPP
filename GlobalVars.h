@@ -147,6 +147,7 @@ char TagDir[500];
 char SnapDir[500];
 char OutputDir[500];
 double f_mb;
+int SubhaloSelectionOn;
 int BufferSize;
 double Omega0;
 double OmegaLambda;
