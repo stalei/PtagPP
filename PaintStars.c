@@ -351,7 +351,7 @@ Len=count;//AllStars[id].Len;
 //if(G.f_mb<10)
 if( (flag && SageOutput[galaxy].FOFHaloIndex !=hid && SageOutput[galaxy].HaloIndex !=subhid) || (flag==2 && SageOutput[galaxy].FOFHaloIndex ==hid && SageOutput[galaxy].HaloIndex ==subhid) )
 {//1
-if(AllStars[id].BindingEnergy <= BECut && Len>0)
+if(AllStars[id].BindingEnergy <= BECut && Len>0 && hid !=-1 && subhid !=-1)
 {//2
 printf("SMass:%g,SMassPre:%g\n",SageOutput[galaxy].StellarMass, SageOutputPre[galaxy].StellarMass);
 //if(Len>0)
