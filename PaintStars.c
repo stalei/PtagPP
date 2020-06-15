@@ -33,7 +33,8 @@ printf("I Started painting snap %d! \n",snap);
 #endif
 double Tf,Ti;
 unsigned long int id;
-int GalID=-1;
+int GalID=-1,flag;
+int *hid,*subhid;
 id=0; //particle id
 fflush(stdout);
 printf("test time:%g\n",AllStars[0].Time);
@@ -119,7 +120,17 @@ for(GalID=0;GalID<NumGalaxies;GalID++)
 	//CalculateStellarProperties(Ti,Tf, GalID,id,ECutoff,StCount);
 	}
 //////////////////////////
-
+if(GP.SubhaloSelectionOn !=0)
+{
+//int *hid,*subhid;
+hid=malloc(sizeof(int));
+*hid=-1;
+subhid=malloc(sizeof(int));
+*subhid=-1;
+ReadTargetHalo(GP.SubhaloFile,snap,hid,subhid);
+flag=(GP.SubhaloSelectionOn==1)?0:1;
+}
+////////////////////
 for(id=0;id<NumOfStars;id++)
         {
 	GalID=AllStars[id].GalNo;
@@ -130,8 +141,12 @@ for(id=0;id<NumOfStars;id++)
 		StCount[GalID]=(StCount[GalID]*10.0)*(GP.f_mb/100);
 	//printf("%ld after StCount\n",id);
         //ECutoff[GalID]=GalBndELimit(gtable,GalID,StCount,GP.f_mb);
-        //if(StCount[GalID]>0) 
-        CalculateStellarProperties(Ti,Tf, GalID,id,ECutoff[GalID],StCount[GalID]);
+        if(GP.SubhaloSelectionOn !=0)
+	   //if(flag)
+		//if(SageOutput[galaxy].HaloIndex==subhid && 
+	  CalculateStellarPropertiesSubSelection(Ti,Tf, GalID,id,ECutoff[GalID],StCount[GalID],*hid,*subhid,flag);
+	else 
+         CalculateStellarProperties(Ti,Tf, GalID,id,ECutoff[GalID],StCount[GalID]);
         }
 
 /////////////////////////
@@ -325,3 +340,97 @@ qsort(BndEnergy, count, sizeof(double), subfind_compare_binding_energy);
 BndELim=BndEnergy[NumLimit];
 return BndELim;
 }
+
+void CalculateStellarPropertiesSubSelection(double ti,double tf, int galaxy, unsigned long int id,double BECut, long int count,int hid,int subhid,int flag)
+{
+//if(flag) //exclude
+//SageOutput[galaxy].HaloIndex
+//if( (flag && SageOutput[galaxy].FOFHaloIndex !=hid && SageOutput[galaxy].HaloIndex !=subhid) || (flag==2 && SageOutput[galaxy].FOFHaloIndex ==hid && SageOutput[galaxy].HaloIndex ==subhid) )
+long int Len;
+Len=count;//AllStars[id].Len;
+//if(G.f_mb<10)
+if( (flag && SageOutput[galaxy].FOFHaloIndex !=hid && SageOutput[galaxy].HaloIndex !=subhid) || (flag==2 && SageOutput[galaxy].FOFHaloIndex ==hid && SageOutput[galaxy].HaloIndex ==subhid) )
+{//1
+if(AllStars[id].BindingEnergy <= BECut && Len>0)
+{//2
+printf("SMass:%g,SMassPre:%g\n",SageOutput[galaxy].StellarMass, SageOutputPre[galaxy].StellarMass);
+//if(Len>0)
+//      {
+//printf("I got inside painting function.\n");
+//fflush(stdout);
+//AllStars[id].StellarMass=1.0e10*SageOutput[galaxy].StellarMass/Len;
+//AllStars[id].StellarMass=1.0e10*((SageOutput[galaxy].StellarMass-SageOutputPre[galaxy].StellarMass)/Len); //1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/Len;
+AllStars[id].StellarMass=1.0e10*((SageOutput[galaxy].Stars)/Len);
+//AllStars[id].GalNo=galaxy;//SageOutput[galaxy].
+AllStars[id].TreeIndex=SageOutput[galaxy].TreeIndex;
+AllStars[id].ZZ=SageOutput[galaxy].MetalsStellarMass/SageOutput[galaxy].StellarMass;//Len;//lower than expected
+AllStars[id].Mvir=SageOutput[galaxy].Mvir;
+AllStars[id].Rvir=SageOutput[galaxy].Rvir;
+AllStars[id].infallMvir=SageOutput[galaxy].infallMvir;
+AllStars[id].Age=GetAge(AllStars[id].Time);//this makes sense
+AllStars[id].LastMajorMerger=SageOutput[galaxy].LastMajorMerger;
+AllStars[id].HaloIndex=SageOutput[galaxy].HaloIndex;
+AllStars[id].SubhaloIndex=SageOutput[galaxy].FOFHaloIndex;
+AllStars[id].GalIndex=SageOutput[galaxy].CentralGal;
+}
+/*else if(GP.f_mb==10 && Len>0)
+//printf("BE:%g,BECut:%g\n",AllStars[id].BindingEnergy, BECut);
+//if(Len>0)
+        {
+//printf("I got inside painting function.\n");
+//AllStars[id].StellarMass=1.0e10*SageOutput[galaxy].StellarMass/Len;
+AllStars[id].StellarMass=1.0e10*((SageOutput[galaxy].StellarMass-SageOutputPre[galaxy].StellarMass)/Len); //1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/Len;
+//AllStars[id].GalNo=galaxy;//SageOutput[galaxy].
+AllStars[id].TreeIndex=SageOutput[galaxy].TreeIndex;
+AllStars[id].ZZ=SageOutput[galaxy].MetalsStellarMass/SageOutput[galaxy].StellarMass;//Len;//lower than expected
+AllStars[id].Mvir=SageOutput[galaxy].Mvir;
+AllStars[id].Rvir=SageOutput[galaxy].Rvir;
+AllStars[id].infallMvir=SageOutput[galaxy].infallMvir;
+AllStars[id].Age=GetAge(AllStars[id].Time);//this makes sense
+AllStars[id].LastMajorMerger=SageOutput[galaxy].LastMajorMerger;
+}
+*/
+
+else // if their energy is above the limit, unbind them
+{
+AllStars[id].BindingEnergy=0;
+AllStars[id].StellarMass=0;
+AllStars[id].ZZ=0;
+}//2
+}//1
+return;
+}
+void ReadTargetHalo(char *FileName, int snap, int *hid,int *subhid)
+{
+  FILE *f;
+  int s,h,sub,status=-1;
+  f=fopen(FileName,"rb");
+  printf("opened the file\n");
+  if(f!=NULL)
+  {
+    do
+    {
+    status=fread(&s,sizeof(s),1,f);
+    printf("read:s=%d\n",s);
+    fread(&h,sizeof(h),1,f);
+    printf("read h=%d\n",h);
+    fread(&sub,sizeof(sub),1,f);
+    printf("read:sub=%d\n",sub);
+    if(s==snap)
+     {
+      *hid=h;
+      //printf("read:sub=%d\n",*subhid);
+      *subhid=sub;
+      return;
+     }
+     //else
+     //{
+      // *hid=-1;
+       //*subhid=-1;
+     //}
+   }while(status==1);
+  }
+
+fclose(f);
+}
+
