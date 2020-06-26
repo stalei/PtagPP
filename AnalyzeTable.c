@@ -158,7 +158,7 @@ for(i=0;i<GP.TotNumStars;i++)
 		//AllStars[id].GalIndex=SageOutput[galaxy].CentralGal;
 		//
 		FinalStellarHalo[i].PID=list->next->star->PID;
-		FinalStellarHalo[i].BindingEnergy=list->next->star->BindingEnergy;
+		FinalStellarHalo[i].BindingEnergy+=list->next->star->BindingEnergy;
                 FinalStellarHalo[i].TreeIndex=list->next->star->TreeIndex;
 		FinalStellarHalo[i].HaloIndex=list->next->star->HaloIndex;
 		FinalStellarHalo[i].SubhaloIndex=list->next->star->SubhaloIndex;

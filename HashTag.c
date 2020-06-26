@@ -231,7 +231,10 @@ for(tf=snapf;tf>=snapi;tf--) //insertion in hash table happens backward, old one
 	status= H5Dread(dataset,TagDatatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, StellarHalo);
 	if(status<0) printf("Error in reading data from the file:%s\n",TagFile);
 	for(i=0;i<rows;i++)
+		{
+		printf("status:%d-Read HDF5:%g\n",status,StellarHalo[i].StellarMass);
 		StellarHaloAllSnaps[c+i]=StellarHalo[i];
+		}
 	//for(i=0;i<rows;i++)
 	//	InsertKey(table,StellarHalo[i].PID,&StellarHalo[i]);
 	free(StellarHalo);
@@ -244,7 +247,7 @@ for(tf=snapf;tf>=snapi;tf--) //insertion in hash table happens backward, old one
 	}/*B*/
 for(i=0;i<GP.TotNumTagsAllSnaps;i++)
 	{
-	//printf("Tag add:%lld\n",StellarHaloAllSnaps[i].PID);
+	printf("Tag add:%lld-%g\n",StellarHaloAllSnaps[i].PID,StellarHaloAllSnaps[i].StellarMass);
 	InsertKey(table,StellarHaloAllSnaps[i].PID,&StellarHaloAllSnaps[i]);
 	}
 //#ifdef DoParallel
@@ -275,8 +278,10 @@ long long i;
 
 //struct HashTable *table=EmptyTable(GP.TotNumPart);
 for(i=0;i<TagCount;i++)
+{
+	printf("tag in construct:%g\n",Halo[i].StellarMass);
 	InsertKey(table,i,&Halo[i]);
-
+}
 return;
 }
 
@@ -334,7 +339,8 @@ struct LinkedList *link;
 if((link= (struct LinkedList*)malloc(sizeof(struct LinkedList)))==NULL)
 	printf("Couldn't allocate memory for linked list!\n");
 link->key= key;
-//printf("the key in add:%lld\n",link->key);
+printf("the key in add:%lld\n",link->key);
+printf("linking: %g\n",tag->StellarMass);
 link->star=tag;
 if(tag==NULL)
 	printf("tag is null!\n");

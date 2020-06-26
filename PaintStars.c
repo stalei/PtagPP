@@ -137,20 +137,15 @@ for(id=0;id<NumOfStars;id++)
 	//printf("%ld after GalID\n",id);
 	if(GP.f_mb<10)
 		//StCount[GalID]=AllStars[id].Len;
-	//else
 		StCount[GalID]=(StCount[GalID]*10.0)*(GP.f_mb/100);
 	//printf("%ld after StCount\n",id);
         //ECutoff[GalID]=GalBndELimit(gtable,GalID,StCount,GP.f_mb);
-        if(GP.SubhaloSelectionOn !=0)
-	   //if(flag)
-		//if(SageOutput[galaxy].HaloIndex==subhid && 
+        if(GP.SubhaloSelectionOn !=0) 
 	  CalculateStellarPropertiesSubSelection(Ti,Tf, GalID,id,ECutoff[GalID],StCount[GalID],*hid,*subhid,flag);
 	else 
          CalculateStellarProperties(Ti,Tf, GalID,id,ECutoff[GalID],StCount[GalID]);
         }
-
 /////////////////////////
-
 #ifdef DoParallel
 fflush(stdout);
 if(ThisTask==0)
@@ -250,7 +245,7 @@ AllStars[id].LastMajorMerger=SageOutput[galaxy].LastMajorMerger;
 else // if their energy is above the limit, unbind them
 {
 AllStars[id].BindingEnergy=0;
-AllStars[id].StellarMass=0;
+AllStars[id].StellarMass=1;
 AllStars[id].ZZ=0;
 }
 
@@ -349,17 +344,14 @@ void CalculateStellarPropertiesSubSelection(double ti,double tf, int galaxy, uns
 long int Len;
 Len=count;//AllStars[id].Len;
 //if(G.f_mb<10)
-if( (flag && SageOutput[galaxy].FOFHaloIndex !=hid && SageOutput[galaxy].HaloIndex !=subhid) || (flag==2 && SageOutput[galaxy].FOFHaloIndex ==hid && SageOutput[galaxy].HaloIndex ==subhid) )
-{//1
+//if( (flag && SageOutput[galaxy].FOFHaloIndex ==hid && SageOutput[galaxy].HaloIndex ==subhid) || (flag==2 && SageOutput[galaxy].FOFHaloIndex !=hid && SageOutput[galaxy].HaloIndex !=subhid) )
+//hid=0;
+//subhid=0;
+//if( (flag && SageOutput[galaxy].FOFHaloIndex ==subhid && SageOutput[galaxy].HaloIndex ==hid) || (flag==2 && SageOutput[galaxy].FOFHaloIndex !=subhid && SageOutput[galaxy].HaloIndex !=hid) )
 if(AllStars[id].BindingEnergy <= BECut && Len>0 && hid !=-1 && subhid !=-1)
 {//2
-printf("SMass:%g,SMassPre:%g\n",SageOutput[galaxy].StellarMass, SageOutputPre[galaxy].StellarMass);
-//if(Len>0)
-//      {
-//printf("I got inside painting function.\n");
-//fflush(stdout);
-//AllStars[id].StellarMass=1.0e10*SageOutput[galaxy].StellarMass/Len;
-//AllStars[id].StellarMass=1.0e10*((SageOutput[galaxy].StellarMass-SageOutputPre[galaxy].StellarMass)/Len); //1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/Len;
+if(SageOutput[galaxy].HaloIndex !=subhid){
+//printf("SMass:%g,SMassPre:%g\n",SageOutput[galaxy].StellarMass, SageOutputPre[galaxy].StellarMass);
 AllStars[id].StellarMass=1.0e10*((SageOutput[galaxy].Stars)/Len);
 //AllStars[id].GalNo=galaxy;//SageOutput[galaxy].
 AllStars[id].TreeIndex=SageOutput[galaxy].TreeIndex;
@@ -373,31 +365,23 @@ AllStars[id].HaloIndex=SageOutput[galaxy].HaloIndex;
 AllStars[id].SubhaloIndex=SageOutput[galaxy].FOFHaloIndex;
 AllStars[id].GalIndex=SageOutput[galaxy].CentralGal;
 }
-/*else if(GP.f_mb==10 && Len>0)
-//printf("BE:%g,BECut:%g\n",AllStars[id].BindingEnergy, BECut);
-//if(Len>0)
-        {
-//printf("I got inside painting function.\n");
-//AllStars[id].StellarMass=1.0e10*SageOutput[galaxy].StellarMass/Len;
-AllStars[id].StellarMass=1.0e10*((SageOutput[galaxy].StellarMass-SageOutputPre[galaxy].StellarMass)/Len); //1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/Len;
-//AllStars[id].GalNo=galaxy;//SageOutput[galaxy].
-AllStars[id].TreeIndex=SageOutput[galaxy].TreeIndex;
-AllStars[id].ZZ=SageOutput[galaxy].MetalsStellarMass/SageOutput[galaxy].StellarMass;//Len;//lower than expected
-AllStars[id].Mvir=SageOutput[galaxy].Mvir;
-AllStars[id].Rvir=SageOutput[galaxy].Rvir;
-AllStars[id].infallMvir=SageOutput[galaxy].infallMvir;
-AllStars[id].Age=GetAge(AllStars[id].Time);//this makes sense
-AllStars[id].LastMajorMerger=SageOutput[galaxy].LastMajorMerger;
-}
-*/
 
-else // if their energy is above the limit, unbind them
+else //flag // if their energy is above the limit, unbind them
 {
 AllStars[id].BindingEnergy=0;
 AllStars[id].StellarMass=0;
 AllStars[id].ZZ=0;
-}//2
-}//1
+}//
+}
+else // if they don't/do belong to the target halo
+{
+AllStars[id].BindingEnergy=0;
+AllStars[id].StellarMass=0;
+AllStars[id].ZZ=0;
+}
+AllStars[id].TreeIndex=SageOutput[galaxy].TreeIndex;
+AllStars[id].HaloIndex=SageOutput[galaxy].HaloIndex;
+AllStars[id].SubhaloIndex=SageOutput[galaxy].FOFHaloIndex;
 return;
 }
 void ReadTargetHalo(char *FileName, int snap, int *hid,int *subhid)
