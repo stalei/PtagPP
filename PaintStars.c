@@ -209,8 +209,9 @@ printf("SMass:%g,SMassPre:%g\n",SageOutput[galaxy].StellarMass, SageOutputPre[ga
 //printf("I got inside painting function.\n");
 //fflush(stdout);
 //AllStars[id].StellarMass=1.0e10*SageOutput[galaxy].StellarMass/Len;
-//AllStars[id].StellarMass=1.0e10*((SageOutput[galaxy].StellarMass-SageOutputPre[galaxy].StellarMass)/Len); //1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/Len;
-AllStars[id].StellarMass=1.0e10*((SageOutput[galaxy].Stars)/Len);
+AllStars[id].StellarMass=1.0e10*((SageOutput[galaxy].StellarMass-SageOutputPre[galaxy].StellarMass)/Len); //1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/Len;
+printf("test in painting:Len:%ld- Stars:%g\n",Len,SageOutput[galaxy].Stars);
+//AllStars[id].StellarMass=1.0e10*((SageOutput[galaxy].Stars)/Len);
 //AllStars[id].GalNo=galaxy;//SageOutput[galaxy].
 AllStars[id].TreeIndex=SageOutput[galaxy].TreeIndex;
 AllStars[id].ZZ=SageOutput[galaxy].MetalsStellarMass/SageOutput[galaxy].StellarMass;//Len;//lower than expected
@@ -351,8 +352,9 @@ Len=count;//AllStars[id].Len;
 if(AllStars[id].BindingEnergy <= BECut && Len>0 && hid !=-1 && subhid !=-1)
 {//2
 if(SageOutput[galaxy].HaloIndex !=subhid){
+AllStars[id].StellarMass=1.0e10*((SageOutput[galaxy].StellarMass-SageOutputPre[galaxy].StellarMass)/Len); //1.0e9*(GetAge(tf)-GetAge(ti))*SageOutput[galaxy].Sfr/Len;
 //printf("SMass:%g,SMassPre:%g\n",SageOutput[galaxy].StellarMass, SageOutputPre[galaxy].StellarMass);
-AllStars[id].StellarMass=1.0e10*((SageOutput[galaxy].Stars)/Len);
+//AllStars[id].StellarMass=1.0e10*((SageOutput[galaxy].Stars)/Len);
 //AllStars[id].GalNo=galaxy;//SageOutput[galaxy].
 AllStars[id].TreeIndex=SageOutput[galaxy].TreeIndex;
 AllStars[id].ZZ=SageOutput[galaxy].MetalsStellarMass/SageOutput[galaxy].StellarMass;//Len;//lower than expected

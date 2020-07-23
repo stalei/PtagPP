@@ -60,6 +60,7 @@ Tfilespace=H5Screate_simple(2,Tdimsf,NULL);
 //        Tgroup=H5Gcreate(Tfile_id,group_name,H5P_DEFAULT);
 //
 Tdset_id=H5Dcreate(Tfile_id,Tdataset_name,GTagDatatype, Tfilespace, H5P_DEFAULT,H5P_DEFAULT,H5P_DEFAULT);
+printf("Write tag test:%g\n",AllStars[10].StellarMass);
 Tstatus=H5Dwrite(Tdset_id, GTagDatatype, H5S_ALL, H5S_ALL, H5P_DEFAULT, AllStars);
 if(Tstatus<0) printf("Failed to save full tag file for snap %d.\n",snap);
 //H5Gclose(Tgroup);
